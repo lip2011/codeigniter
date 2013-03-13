@@ -156,8 +156,11 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 */
 $config['allow_get_array']		= TRUE;
 $config['enable_query_strings'] = FALSE;
+//控制器名
 $config['controller_trigger']	= 'c';
+//方法名
 $config['function_trigger']		= 'm';
+//若控制器在子目录下，URL中需带有这个参数，指定控制器所在子目录名称
 $config['directory_trigger']	= 'd'; // experimental not currently in use
 
 /*
