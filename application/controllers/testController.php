@@ -13,13 +13,25 @@ class TestController extends CI_Controller {
     public function index($uid = null)
     {
 
+        $this->load->helper("array");
+        random_element() . "<br>";
+        helperTest() . "<br>";
+
+        $this->load->helper("test");
+        //testHelperFunction();
+
         $data["users"] = $this->test_model->getHintUsers($uid);
         $data["content"] = "Hello World";
 
+        //log_message("error", "this is a log test");
+        //缓存页面
+        //$this->output->cache(30/60);
         $this->load->view($this->folderName . 'header.html');
         #$this->load->view($this->folderName . 'header.html', "", true);
         $this->load->view($this->folderName . 'test.html', $data);
         $this->load->view($this->folderName . 'footer.html');
+
+        $this->output->enable_profiler(true);
     }
 
     public function createNewUser()
