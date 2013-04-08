@@ -21,28 +21,29 @@ class Test_model extends CI_Model {
 
     public function insertUser()
     {
-        $this->load->helper("form");
         $this->load->library("form_validation");
 
-        $cheakConfig = array(
-                            array(
-                                    "field" => "email",
-                                    "label" => "Email Value",
-                                    "rules" => "trim|required|valid_email|is_unique[hint_users.email]"
-                                ),
-                            array(
-                                    "field" => "password",
-                                    "label" => "Password Value",
-                                    "rules" => "trim|required|min_length[4]|max_length[8]|matches[password_again]"
-                                ),
-                            array(
-                                    "field" => "password_again",
-                                    "label" => "Password Again Value",
-                                    "rules" => "trim|required|min_length[4]|max_length[8]"
-                                )
-                        );
+        // $cheakConfig = array(
+        //                     array(
+        //                             "field" => "email",
+        //                             "label" => "Email Value",
+        //                             "rules" => "trim|callback_username_check|required|valid_email|is_unique[hint_users.email]"
+        //                         ),
+        //                     array(
+        //                             "field" => "password",
+        //                             "label" => "Password Value",
+        //                             "rules" => "trim|required|min_length[4]|max_length[8]|matches[password_again]"
+        //                         ),
+        //                     array(
+        //                             "field" => "password_again",
+        //                             "label" => "Password Again Value",
+        //                             "rules" => "trim|required|min_length[4]|max_length[8]"
+        //                         )
+        //                 );
 
-        $this->form_validation->set_rules($cheakConfig);
+        // $this->form_validation->set_rules($cheakConfig);
+
+        /* 验证规则在 config/from_validation.php */
         if ($this->form_validation->run() === FALSE) {
             return false;
         }
@@ -56,5 +57,18 @@ class Test_model extends CI_Model {
                 );
 
         return $this->db->insert("hint_users", $data);
+    }
+
+    public function username_check($str)
+    {
+        if ($str == 'test')
+        {
+            $this->form_validation->set_message('username_check', 'The field can not be the word "test"');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
     }
 } 
