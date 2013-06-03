@@ -39,7 +39,17 @@ class TestController extends CI_Controller {
 
         echo "site_url==" . $this->config->site_url() . "<br>";
         echo "base_url==" . $this->config->base_url() . "<br>";
-        echo "system_url==" . $this->config->system_url() . "<br>";
+        echo "system_url==" . $this->config->system_url() . "<br><br>";
+        echo "APPPATH====" . APPPATH . "<br>";
+        echo "BASEPATH====" . BASEPATH . "<br>";
+        echo "SYSDIR====" . SYSDIR . "<br>";
+
+    }
+
+    public function smartyTest()
+    {
+        $this->smarty->assign("notice", "thanks to use Smarty");
+        $this->smarty->display("test/smartyTest.html");
     }
 
     public function createNewUser()
