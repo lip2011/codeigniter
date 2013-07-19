@@ -1,23 +1,35 @@
 <?php
+require_once 'base_db.php';
 
-class Test_model extends CI_Model {
+class Test_model extends Base_db {
 
-    public function __construct()
-    {
-        $this->load->database();
-    }
+    // public function __construct()
+    // {
+    //     $this->load->database();
+    // }
+
+    // public function getHintUsers($uid = null)
+    // {
+    //     if ($uid) {
+    //         $query = $this->db->get_where("hint_users", array("id" => $uid));
+    //         //return $query->row_array();
+    //         return $query->result_array();
+    //     }
+
+    //     $query = $this->db->get("hint_users");
+    //     return $query->result_array();
+    // }
+
 
     public function getHintUsers($uid = null)
     {
-        if ($uid) {
-            $query = $this->db->get_where("hint_users", array("id" => $uid));
-            //return $query->row_array();
-            return $query->result_array();
-        }
-
-        $query = $this->db->get("hint_users");
-        return $query->result_array();
+        $result = $this->getTableAll("hint_users");
+        // $uid = 1;
+        // $sql = "SELECT * FROM hint_users WHERE id = ?";
+        // $result = $this->fetchAll($sql, array("id" => $uid));
+        return $result;
     }
+
 
     public function insertUser()
     {

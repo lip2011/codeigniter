@@ -1,1 +1,15 @@
-{%$notice%}
+{%$notice%}<br>
+
+{%testHelperFunction()%}<br>
+
+<div id="container">
+    {%foreach from=$users item=data%}
+        <h2>{%$data.id%}</h2>
+        <div id="main">
+            {%$data.email%}
+        </div>
+        <p><a href="index/{%$data.id%}">detail</a></p>
+    {%/foreach%}
+
+    <a href="testController/createNewUser">create new user</a>
+</div>

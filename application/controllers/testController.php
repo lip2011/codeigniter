@@ -10,7 +10,7 @@ class TestController extends CI_Controller {
         $this->load->model("test_model");
     }
 
-    public function index($uid = null)
+    public function index()
     {
 
         $this->load->helper("array");
@@ -20,7 +20,8 @@ class TestController extends CI_Controller {
         $this->load->helper("test");
         //testHelperFunction();
 
-        $data["users"] = $this->test_model->getHintUsers($uid);
+        $users = $this->test_model->getHintUsers();
+        $data["users"] = $users;
         $data["content"] = "Hello World";
 
         //log_message("error", "this is a log test");
@@ -43,12 +44,14 @@ class TestController extends CI_Controller {
         echo "APPPATH====" . APPPATH . "<br>";
         echo "BASEPATH====" . BASEPATH . "<br>";
         echo "SYSDIR====" . SYSDIR . "<br>";
-
     }
 
     public function smartyTest()
     {
+        $this->load->helper("test");
         $this->smarty->assign("notice", "thanks to use Smarty");
+        $users = $this->test_model->getHintUsers(null);
+        $this->smarty->assign('users', $users);
         $this->smarty->display("test/smartyTest.html");
     }
 
