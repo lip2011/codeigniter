@@ -1,20 +1,6 @@
 
 <a href="testController/smartyTest">smarty test</a><br>
-<div id="container">
-    <?php testHelperFunction();?><br>
-    <h1><?php echo $content; ?></h1><br>
 
-    <?php foreach ($users as $data): ?>
-
-        <h2><?php echo $data['id'] ?></h2>
-        <div id="main">
-            <?php echo $data['email'] ?>
-        </div>
-        <p><a href="index/<?php echo $data['id'] ?>">detail</a></p>
-    <?php endforeach ?>
-    <br>
-    <a href="createNewUser">create new user</a>
-</div>
 
 
 <input type="text" id="email">

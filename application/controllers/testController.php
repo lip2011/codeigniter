@@ -20,8 +20,8 @@ class TestController extends CI_Controller {
         $this->load->helper("test");
         //testHelperFunction();
 
-        $users = $this->test_model->getHintUsers();
-        $data["users"] = $users;
+        // $users = $this->test_model->getHintUsers();
+        // $data["users"] = $users;
         $data["content"] = "Hello World";
 
         //log_message("error", "this is a log test");

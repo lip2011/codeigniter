@@ -1,3 +1,4 @@
 RewriteEngine on
-RewriteCond $1 !^(index\.php|images|robots\.txt)
-RewriteRule ^(.*)$ index.php/$1 [L]
+#RewriteCond $1 !^(index\.php|images|robots\.txt)
+RewriteCond $1 !^(index\.php|images|static|user_guide|robots\.txt|.+\.gif$|.+\.jpg$|.+\.png$|.+\.js$|.+\.swf$|.+\.txt$)
+RewriteRule ^(.+)$ index.php/$1 [L]

@@ -23,7 +23,7 @@ class Test_model extends Base_db {
 
     public function getHintUsers($uid = null)
     {
-        $result = $this->getTableAll("hint_users");
+        $result = $this->getTableAll("basic_shop");
         // $uid = 1;
         // $sql = "SELECT * FROM hint_users WHERE id = ?";
         // $result = $this->fetchAll($sql, array("id" => $uid));
