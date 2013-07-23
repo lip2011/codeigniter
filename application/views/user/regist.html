@@ -1,0 +1,48 @@
+{%include file="header.html"%}
+
+<link rel="stylesheet" type="text/css" href="{%$staticUrl%}/css/regist.css">
+<script type="text/javascript" src="{%$staticUrl%}/js/regist.js"></script>
+
+<body>
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          </button>
+          <a class="brand" href="#">playab</a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+              <i class="icon-user icon-white"></i>
+                aaaaaaaaaaaaaaa
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+        
+
+    <form action="{%$baseUrl%}user/registCommit" method="post" class="form-horizontal register-form" id="registForm">
+        <div class="control-group">
+            <label class="control-label" for="inputEmail">邮箱</label>
+            <div class="controls">
+                <!-- <input type="text" id="inputEmail" name="email" placeholder="邮箱" class="validate[required, custom[email], ajax[ajaxUserCallPhp] ]"> -->
+                <input type="text" id="inputEmail" name="email" placeholder="邮箱" class="validate[ajax[ajaxUserCallPhp]]">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputPassword">密码</label>
+            <div class="controls">
+                <!-- <input type="password" id="inputPassword" name="password" placeholder="密码" class="validate[required, minSize[6]]"> -->
+                <input type="password" id="inputPassword" name="password" placeholder="密码">
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <!-- <button type="submit" class="btn btn-primary">登录</button> -->
+                <button type="button" class="btn btn-info register-btn" onclick="jQuery.register.regist()">注册</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
