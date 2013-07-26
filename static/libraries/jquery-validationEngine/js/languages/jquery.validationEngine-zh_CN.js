@@ -169,7 +169,16 @@
                     "alertText2": "可接受的格式： ",
                     "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM 或 ", 
                     "alertText4": "yyyy-mm-dd hh:mm:ss AM|PM"
-	            }
+	            },
+                "ajaxUserEmailCheck": {
+                    "url": UrlConfig.baseUrl + "user/ajaxCheck",
+                    // you may want to pass extra data on the ajax call
+                    //"extraData": "name=eric",
+                    // if you provide an "alertTextOk", it will show as a green prompt when the field validates
+                    "alertTextOk": "* 此帐号名称可以使用",
+                    "alertText": "* 此名称已被其他人使用",
+                    "alertTextLoad": "* 正在确认帐号名称是否有其他人使用，请稍等。"
+                },
             };
             
         }

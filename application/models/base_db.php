@@ -23,6 +23,9 @@ class Base_db extends CI_Model
         return $query->result_array();
     }
 
+    /*
+        $params = array('id' => 1)
+    */
     public function fetchAll($sql, $params = null)
     {
         $query = $this->db->query($sql, $params);
@@ -43,6 +46,18 @@ class Base_db extends CI_Model
         return null;
     }
 
+    public function fetchOne($sql, $params)
+    {
+        $query = $this->db->query($sql, $params);
+        if($query->num_rows() > 0) {
+            $result = $query->row_array();
+            foreach ($result as $key => $value) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
     /*
     $data = array(
                'title' => 'My title' ,

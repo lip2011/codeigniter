@@ -6,4 +6,10 @@ class User_model extends Base_db
     {
         return $this->insert('users', array('email' => $email, 'password' => $password));
     }
+
+    public function getUserInfoByEmail($email)
+    {
+        $sql = "SELECT * FROM users WHERE email = ?";
+        return $this->fetchRow($sql, array('email' => $email));
+    }
 }

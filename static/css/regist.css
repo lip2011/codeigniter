@@ -8,6 +8,10 @@
     font-size: 25px;
 }
 
-.register-btn {
+.register-btn {`
     padding: 4px 95px;
+}
+
+.error {
+    color: #EA5200;
 }

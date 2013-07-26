@@ -25,21 +25,57 @@
         <div class="control-group">
             <label class="control-label" for="inputEmail">邮箱</label>
             <div class="controls">
-                <!-- <input type="text" id="inputEmail" name="email" placeholder="邮箱" class="validate[required, custom[email], ajax[ajaxUserCallPhp] ]"> -->
-                <input type="text" id="inputEmail" name="email" placeholder="邮箱" class="validate[ajax[ajaxUserCallPhp]]">
+                <input type="text" id="inputEmail" name="email" placeholder="邮箱">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="inputPassword">密码</label>
             <div class="controls">
-                <!-- <input type="password" id="inputPassword" name="password" placeholder="密码" class="validate[required, minSize[6]]"> -->
                 <input type="password" id="inputPassword" name="password" placeholder="密码">
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="inputPhoneNum">电话</label>
             <div class="controls">
-                <!-- <button type="submit" class="btn btn-primary">登录</button> -->
-                <button type="button" class="btn btn-info register-btn" onclick="jQuery.register.regist()">注册</button>
+                <input type="text" id="inputPhoneNum" name="phone" placeholder="电话">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">性别</label>
+            <div class="controls">
+                <input type="radio" id="sexMale" name="sex">男
+                <input type="radio" id="sexFemale" name="sex">女
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">爱好</label>
+            <div class="controls">
+                <input type="checkbox" value="reading" name="hobby[]" />读书
+                <input type="checkbox" value="swimming" name="hobby[]" />游泳
+                <input type="checkbox" value="sports" name="hobby[]" />体育
+            </div>
+        </div>
+
+
+        <div class="control-group">
+            <label class="control-label">课程</label>
+            <div class="controls">
+                <select name="course" multiple="multiple">
+                    <option value=""></option>
+                    <option value="yuwen">语文</option>
+                    <option value="shuxue">数学</option>
+                    <option value="dili">地理</option>
+                    <option value="huaxue">化学</option>
+                    <option value="wuli">物理</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-info register-btn">注册</button>
             </div>
         </div>
     </form>

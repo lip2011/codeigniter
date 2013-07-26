@@ -1362,10 +1362,12 @@
 			 var rule = options.allrules[errorSelector];
 			 var extraData = rule.extraData;
 			 var extraDataDynamic = rule.extraDataDynamic;
+			 var ajaxSubmitFieldName = field.attr("name");
 			 var data = {
 				"fieldId" : field.attr("id"),
-				"fieldValue" : field.val()
+				//"fieldValue" : field.val()
 			 };
+			 data[ajaxSubmitFieldName] = field.val();
 
 			 if (typeof extraData === "object") {
 				$.extend(data, extraData);
