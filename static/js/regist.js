@@ -111,6 +111,30 @@ $(document).ready(function(){
             }
         }
     });
+
+    /*********************************************** Handlebars **********************************************/
+    //helper function
+    Handlebars.registerHelper('fullName', function(person) {
+        return person.firstName + " " + person.lastName;
+    });
+
+    //use "this"
+    Handlebars.registerHelper('agree_button', function() {
+        return "<button>I agree. I enjoy" + this.author.firstName + " and " + this.author.lastName + "</button>";
+    });
+
+    var source = $("#helperTest").html();
+    var template = Handlebars.compile(source);
+    var collection = {
+                        author: {firstName: "Alan", lastName: "Johnson"},
+                        body: "I Love Handlebars",
+                        comments: [{
+                            author: {firstName: "Yehuda", lastName: "Katz"},
+                            body: "Me too!"
+                        }]
+                    }
+    var html = template(collection);
+    $('#userList').html(html);
 });
 
 
