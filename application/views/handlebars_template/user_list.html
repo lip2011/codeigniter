@@ -1,0 +1,14 @@
+<script id="entry-template" type="text/x-handlebars-template">
+    <table class="table">
+        <tr>
+            <td>id</td>
+            <td>邮箱</td>
+        </tr>
+        {{#each collection}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.email}}</td>
+            </tr>
+        {{/each}}
+    </table>
+</script>

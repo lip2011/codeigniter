@@ -3,6 +3,10 @@
 <link rel="stylesheet" type="text/css" href="{%$staticUrl%}/css/regist.css">
 <script type="text/javascript" src="{%$staticUrl%}/js/regist.js"></script>
 
+
+{%include file="handlebars_template/user_list.html"%}
+
+
 <body>
     <div class="navbar navbar-inverse">
       <div class="navbar-inner">
@@ -76,9 +80,15 @@
         <div class="control-group">
             <div class="controls">
                 <button type="submit" class="btn btn-info register-btn">注册</button>
+
+                <button type="button" class="btn btn-info register-btn" onclick="jQuery.register.getUserList()">handlebars</button>
             </div>
         </div>
     </form>
+
+
+    <div id="userList">
+    </div>
 </body>
 
 </html>

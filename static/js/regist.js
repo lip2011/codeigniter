@@ -115,10 +115,22 @@ $(document).ready(function(){
 
 
 
-// (function($) {
-//     $.register = {
-//         regist: function() {
+(function($) {
+    $.register = {
+        getUserList: function() {
+            $.ajax({
+                method: "post",
+                dataType: "json",
+                url: UrlConfig.baseUrl + "user/ajaxGetUserList",
+                success: function(response) {
 
-//         }
-//     };
-// })(jQuery);
+                    var source = $("#entry-template").html();
+                    var template = Handlebars.compile(source);
+
+                    var html = template({collection: response});
+                    $('#userList').html(html);
+                }
+            });
+        }
+    };
+})(jQuery);

@@ -12,4 +12,9 @@ class User_model extends Base_db
         $sql = "SELECT * FROM users WHERE email = ?";
         return $this->fetchRow($sql, array('email' => $email));
     }
+
+    public function getUserList()
+    {
+        return $this->getTableAll('users');
+    }
 }

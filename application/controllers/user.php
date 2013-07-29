@@ -48,6 +48,13 @@ class User extends MY_controller
         echo json_encode(($phone == '021-1234567'));
     }
 
+    public function ajaxGetUserList()
+    {
+        $this->load->model('user_model');
+        $result = $this->user_model->getUserList();
+        echo json_encode($result);
+    }
+
     public function home()
     {
         $this->smarty->display("user/home.html");
