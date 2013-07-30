@@ -21,6 +21,23 @@
 </script>
 
 
+<script id="jsmartTestTpl" type="text/x-jsmart-tmpl">
+    <h1>{$greeting}</h1>
+
+    {foreach $books as $i => $book}
+      <div style="background-color: {cycle values="cyan,yellow"};">
+         [{$i+1}] {$book.title|upper} by {$book.author}
+            {if $book.price}
+               Price: <span style="color:red">${$book.price}</span>
+            {/if}
+      </div>
+    {foreachelse}
+      No books
+    {/foreach}
+
+    Total: {$book@total}
+</script>
+
 <body>
     <div class="navbar navbar-inverse">
       <div class="navbar-inner">
@@ -101,8 +118,10 @@
     </form>
 
 
-    <div id="userList">
-    </div>
+    <div id="userList"></div>
+    <hr>
+    <div id="jsmartDiv"></div>
+
 </body>
 
 </html>
