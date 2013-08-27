@@ -1,0 +1,136 @@
+{%include file="share/header.html"%}
+
+<div class="container">
+    <div class="span12 ">
+        <a class='user-show-dialog' id="add_user_link" data-operation="add_user">
+            <i class="icon-user"></i> 添加用户
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <h3><small>用户列表</small></h3>        
+            <table class="table table-bordered table-hover" id="user_table">
+                <tr style="background:#DFF2F5;">
+                    <td>#</td>
+                    <td>姓名</td>
+                    <td>登陆名</td>
+                    <td>手机</td>
+                    <td>邮箱</td>
+                    <td>状态</td>
+                    <td>操作</td> 
+                </tr>      
+                
+                {%foreach from=$userList item=data key=index%}
+                    <tr>
+                        <td>{%$data.id%}</td>
+                        <td>{%$data.name%}</td>
+                        <td>{%$data.login_name%}</td>
+                        <td>{%$data.phone%}</td>
+                        <td>{%$data.email%}</td>
+                        <td>{%getUserStatusName($data.status)%}</td>
+                        <td>
+                           <!--  <a id="edit_user_link" class="user-show-dialog" data-gid="{%$data.id%}" data-gname="{%$data.name%}" data-gloginname="{%$data.login_name%}" data-gemail="{%$data.email%}" data-gstatus="{%$data.status%}" data-operation="edit_user">
+                                <i class="icon-pencil"></i>修改
+                            </a> -->
+                            <a id="edit_user_link" class="user-show-dialog" data-gid="{%$index%}" data-operation="edit_user">
+                                <i class="icon-pencil"></i>修改
+                            </a>
+                        </td>
+                    </tr>
+                {%/foreach%}
+            </table>
+
+            {%include file="share/pager.html"%}
+        </div>
+    </div>
+</div>
+
+
+<!-- 使用handlebars -->
+<!-- <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"></h3>
+    </div>
+    <div class="modal-body" id="modal_body">
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">撤销</button>
+    </div>
+</div>
+
+{%include file="user/user_pop_handlebars.html"%} -->
+<!-- 使用handlebars -->
+
+
+<!-- 使用databind -->
+<script type="text/javascript">
+    window.userList = {%json_encode($userList)%};
+</script>
+
+<div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="pop_title"></h3>
+    </div>
+    <div class="modal-body" id="modal_body">
+        <form class="form-horizontal" id="user_form" method="post" action="">
+            <div class="control-group">
+                <label class="control-label" for="user_email">邮件地址</label>
+                <div class="controls">
+                    <input type="text" id="user_email" name="email" class="text-input" placeholder="Email" data-bind-value="recode.email">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="user_name">姓名</label>
+                <div class="controls">
+                    <input type="text" id="user_name" name="name" class="text-input" placeholder="Name" data-bind-value="recode.name">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="user_login_name">登陆名</label>
+                <div class="controls">
+                    <input type="text" id="user_login_name" class="text-input" name="login_name" placeholder="LoginName" data-bind-value="recode.login_name">
+                </div>
+            </div>
+
+            <div class="control-group" data-bind-hide="recode.id|blank">
+                <label class="control-label">状态</label>
+                <div class="controls row">
+                    <div class="span1">
+                        <label class="radio">
+                            <input type="radio" name="status" value="1" data-bind-checked="recode.status|eq('1')">活跃
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <label class="radio">
+                            <input type="radio" name="status" value="2" data-bind-checked="recode.status|eq('2')">冻结
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls row">
+                    <div class="span1">
+                        <button type="submit" class="btn btn-primary">添加</button>
+                    </div>
+                    <div class="span1">
+                        <button type="reset" class="btn">重置</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">撤销</button>
+    </div>
+</div>
+
+<!-- 使用databind -->
+
+
+{%include file="share/footer.html"%}

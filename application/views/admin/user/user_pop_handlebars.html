@@ -1,0 +1,53 @@
+<script id="pop_user_script" type="text/x-handlebars-template">
+    <form class="form-horizontal" id="user_form" method="post" action="">
+        <div class="control-group">
+            <label class="control-label" for="user_email">邮件地址</label>
+            <div class="controls">
+                <input type="text" id="user_email" name="email" class="text-input" placeholder="Email" value="{{email}}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="user_name">姓名</label>
+            <div class="controls">
+                <input type="text" id="user_name" name="name" class="text-input" placeholder="Name" value="{{name}}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="user_login_name">登陆名</label>
+            <div class="controls">
+                <input type="text" id="user_login_name" class="text-input" name="login_name" placeholder="LoginName" value="{{loginname}}">
+            </div>
+        </div>
+
+        {{#if_eq dataOperation compare='edit_user'}}
+            <div class="control-group">
+                <label class="control-label">状态</label>
+                <div class="controls row">
+                    <div class="span1">
+                        <label class="radio">
+                            <input type="radio" name="status" value="1" checked="">活跃
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <label class="radio">
+                            <input type="radio" name="status" value="2">冻结
+                        </label>
+                    </div>
+                </div>
+            </div>
+        {{/if_eq}}
+
+        <div class="control-group">
+            <div class="controls row">
+                <div class="span1">
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+                <div class="span1">
+                    <button type="reset" class="btn">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</script>

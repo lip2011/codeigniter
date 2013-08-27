@@ -1,20 +1,15 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User_model extends Base_db
+class User_model extends MY_Model 
 {
-    public function regist($email, $password)
+    public function login($email, $password)
     {
-        return $this->insert('users', array('email' => $email, 'password' => $password));
-    }
+        $userInfo = $this->db->get_where('users', array('email' => $email))->result_array();
 
-    public function getUserInfoByEmail($email)
-    {
-        $sql = "SELECT * FROM users WHERE email = ?";
-        return $this->fetchRow($sql, array('email' => $email));
-    }
+        if (count($userInfo) == 1) {
+            return true;
+        }
 
-    public function getUserList()
-    {
-        return $this->getTableAll('users');
+        return false;
     }
-}
+} 

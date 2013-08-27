@@ -1,0 +1,29 @@
+{%if $pager.maxPager > 1%}
+    <div class="pagination">
+        <ul style="display: block;">
+            {%if $pager.pageIndex>1%}
+                <li>
+                    <a href='{%"$adminBaseUrl/`$pager.requestUrl`?page=`$pager.pageIndex-1``$pager.pageParam`"%}'>&lt;</a>&nbsp;
+                </li>
+            {%/if%}
+
+            {%for $page=1 to $pager.maxPager%}
+                {%if $pager.pageIndex==$page%}
+                    <li class="active disabled"><span>{%$page%}</span></li>
+                {%else%}
+                    <li>
+                        <a href='{%"$adminBaseUrl/`$pager.requestUrl`?page=`$page``$pager.pageParam`"%}'>
+                            &nbsp;<strong>{%$page%}</strong>&nbsp;
+                        </a>
+                    </li>
+                {%/if%}
+            {%/for%}
+
+            {%if $pager.pageIndex<$pager.maxPager%}
+                <li>
+                    <a href='{%"$adminBaseUrl/`$pager.requestUrl`?page=`$pager.pageIndex+1``$pager.pageParam`"%}'>&gt;</a>&nbsp;
+                </li>
+            {%/if%}
+        </ul>
+    </div>
+{%/if%}

@@ -1,10 +1,13 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-//扩展email类
 class MY_Email extends CI_Email
 {
-    public function __construct()
+    public function sendSmtpEmail($fromName, $subject, $message, $fromEmail = FROM_EMAIL, $toEmail = TO_EMAIL)
     {
-        parent::__construct();
+        $this->from($fromEmail, $fromName);
+        $this->to($toEmail);
+        $this->subject($subject);
+        $this->message($message);
+        $this->send();
     }
 }

@@ -2,19 +2,17 @@
 
 require_once APPPATH . "third_party/smarty/Smarty.class.php";
 
-//I know I am using the CI_ prefix instead of the MY_ prefix but no class called Smarty exists in CodeIgniter
+//using the CI_ prefix instead of the MY_ prefix but no class called Smarty exists in CodeIgniter
 class CI_Smarty extends Smarty
 {
-  function __construct()
-  {
-    parent::__construct();
+    function __construct()
+    {
+        parent::__construct();
 
-    $this->left_delimiter = "{%";
-    $this->right_delimiter = "%}";
-
-    $this->setTemplateDir(APPPATH . "views");
-    $this->setCompileDir(APPPATH . "templates_c");
-
-    $this->setPluginsDir(APPPATH . "third_party/smarty/myplugins");
-  }
+        $this->left_delimiter = "{%";
+        $this->right_delimiter = "%}";
+        $this->setTemplateDir(APPPATH . "views/admin");
+        $this->setCompileDir(APPPATH . "templates_c/admin");
+        $this->setPluginsDir(array(APPPATH . "third_party/smarty/plugins", APPPATH . "third_party/smarty/myplugins"));
+    }
 }

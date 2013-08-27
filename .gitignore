@@ -1,2 +1,9 @@
-application/logs/
-application/templates_c
+application/logs/*.php
+application/templates_c/admin/*.php
+application/config/development/config.php
+application/config/development/database.php
+application/config/production/config.php
+application/config/production/database.php
+application/config/testing/config.php
+application/config/testing/database.php
+local
