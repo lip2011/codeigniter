@@ -11,7 +11,7 @@ class User extends MY_Controller
         $start = ($page - 1) * $this->_pageSize;
 
         $userCount = $this->db->count_all('users');
-        $userList = $this->db->get('users', $this->_pageSize, $start)->result_array();
+        $userList = $this->db->order_by('id', 'desc')->limit($this->_pageSize, $start)->get('users')->result_array();
 
         $pager = array( 'pageIndex' => $page,
                         'requestUrl' => 'user/index',
@@ -40,5 +40,10 @@ class User extends MY_Controller
         }
 
         $this->smarty->display('user/login.html');
+    }
+
+    public function create()
+    {
+       echo true;
     }
 }

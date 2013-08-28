@@ -102,12 +102,13 @@ $().ready(function(){
 
         if (dataOperation == 'add_user') {
             $('#pop_title').html('添加用户');
-            $('#user_form').attr('action', UrlConfig.adminBaseUrl + '/user/addUser');
+            $('#user_form').attr('action', UrlConfig.adminBaseUrl + '/user/create');
 
-            rivets.bind($('#user_form'), {recode: {}});
+            var user = {name: '', login_name: '', email: ''};
+            rivets.bind($('#user_form'), {recode: user});
         } else {
             $('#pop_title').html('修改用户信息');
-            $('#user_form').attr('action', UrlConfig.adminBaseUrl + '/user/editUser');
+            $('#user_form').attr('action', UrlConfig.adminBaseUrl + '/user/update');
 
             var user = userList[id];
             console.log(user);
@@ -116,8 +117,9 @@ $().ready(function(){
 
         $('#user_pop_model').modal('toggle');
 
-        
+   
         $('#user_form').validate({
+            debug: true,
             rules: {
                 name: {
                    required: true,
@@ -130,19 +132,55 @@ $().ready(function(){
                    required: true,
                 }
             },
-            //配置错误提示信息
-            messages: {
-                email: {
-                    required: "邮件地址不能为空",
-                    email: "邮件地址无效"
-                },
-                name: {
-                    required: "姓名不能为空"
-                },
-                login_name: {
-                    required: "登陆名不能为空"
-                }
+            submitHandler: function(form) { 
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: UrlConfig.adminBaseUrl + '/user/create',
+                    data: {},
+                    success: function(){
+                        $.user.showSuccess();
+                        $('#user_pop_model').modal('hide');
+                    },
+                    error: function(){
+                        alert("error");
+                    }
+                });
             }
         });
+
+        $('#user_pop_model').on('hide', function(){
+            $('#user_form').data('validator').resetForm();
+        })
     });
 })
+
+// $.user = {
+
+//     showSuccess: function() {
+//         alert("success");
+//     }
+// }
+
+
+
+//  http://stackoverflow.com/questions/122102/most-efficient-way-to-clone-an-object
+// [CSTPM12时30分33秒] 何永鹏: window.App = {}
+
+// App.User = Spine.Model.sub();
+// App.User.configure("User", "name", "age");
+
+// App.User.refresh([{id: 1, name: 'a', age: '1'}, {id: 2, name: 'b', age: '2'}], {clear: true})
+
+// App.User.first()
+// App.User.findByAttribute('id', 1)
+// [CSTPM12时33分54秒] 何永鹏: window.App || (window.App = {});
+
+// App.User = Spine.Model.sub();
+// App.User.configure("User", "name", "age");
+
+
+// App.User.refresh([{id: 1, name: 'a', age: '1'}, {id: 2, name: 'b', age: '2'}], {clear: true})
+
+// App.User.first()
+// App.User.findByAttribute('id', 1)
