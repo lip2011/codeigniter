@@ -165,7 +165,7 @@ $().ready(function(){
 
 
 //  http://stackoverflow.com/questions/122102/most-efficient-way-to-clone-an-object
-// [CSTPM12时30分33秒] 何永鹏: window.App = {}
+// window.App = {}
 
 // App.User = Spine.Model.sub();
 // App.User.configure("User", "name", "age");
@@ -174,7 +174,7 @@ $().ready(function(){
 
 // App.User.first()
 // App.User.findByAttribute('id', 1)
-// [CSTPM12时33分54秒] 何永鹏: window.App || (window.App = {});
+//  window.App || (window.App = {});
 
 // App.User = Spine.Model.sub();
 // App.User.configure("User", "name", "age");
