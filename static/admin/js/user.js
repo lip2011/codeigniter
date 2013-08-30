@@ -1,6 +1,14 @@
-window.App = {};
-App.User = Spine.Model.sub();
-App.User.configure('User', 'id', 'email', 'name', 'login_name', 'passwd', 'password_confirm', 'sex', 'status');
+// window.App = {};
+// App.User = Spine.Model.sub();
+// App.User.configure('User', 'id', 'email', 'name', 'login_name', 'passwd', 'password_confirm', 'sex', 'status');
+
+
+// App.User.bind('refresh', function(){
+//     var records = App.User.all()
+//     var template = Handlebars.compile($('#user_list_script').html());
+//     var html = template({collection: records});
+//     $('#user_tbody').html(html);
+// })
 
 $().ready(function(){
 
@@ -167,14 +175,9 @@ $().ready(function(){
         var page = $(this).data('page');
         $.user.getUserListByPage(page);
     });
-
-
-    App.User.bind('refresh', function(){
-        var records = App.User.all()
-        var template = Handlebars.compile($('#user_list_script').html());
-        var html = template({collection: records});
-        $('#user_table').html(html);
-    })
+    
+    App.User.refresh(userList, {clear: true});
+   
 })
 
 $.user = {

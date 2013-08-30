@@ -13,34 +13,17 @@
             <table class="table table-bordered table-hover" id="user_table">
                 <thead>
                     <tr style="background:#DFF2F5;">
-                        <td>#</td>
-                        <td>姓名</td>
-                        <td>登陆名</td>
-                        <td>手机</td>
-                        <td>邮箱</td>
-                        <td>状态</td>
-                        <td>操作</td> 
+                        <th>#</th>
+                        <th>姓名</th>
+                        <th>登陆名</th>
+                        <th>手机</th>
+                        <th>邮箱</th>
+                        <th>状态</th>
+                        <th>操作</th> 
                     </tr>
                 </thead>
-                <tbody>
-                    {%foreach from=$userList item=data key=index%}
-                        <tr>
-                            <td>{%$data.id%}</td>
-                            <td>{%$data.name%}</td>
-                            <td>{%$data.login_name%}</td>
-                            <td>{%$data.phone%}</td>
-                            <td>{%$data.email%}</td>
-                            <td>{%getUserStatusName($data.status)%}</td>
-                            <td>
-                               <!--  <a id="edit_user_link" class="user-show-dialog" data-gid="{%$data.id%}" data-gname="{%$data.name%}" data-gloginname="{%$data.login_name%}" data-gemail="{%$data.email%}" data-gstatus="{%$data.status%}" data-operation="edit_user">
-                                    <i class="icon-pencil"></i>修改
-                                </a> -->
-                                <a id="edit_user_link" class="user-show-dialog" data-gid="{%$data.id%}" data-operation="edit_user">
-                                    <i class="icon-pencil"></i>修改
-                                </a>
-                            </td>
-                        </tr>
-                    {%/foreach%}
+                <tbody id="user_tbody">
+
                 </tbody>
             </table>
 
@@ -69,17 +52,6 @@
 
 
 <script id="user_list_script" type="text/x-handlebars-template">
-
-    <tr style="background:#DFF2F5;">
-        <td>#</td>
-        <td>姓名</td>
-        <td>登陆名</td>
-        <td>手机</td>
-        <td>邮箱</td>
-        <td>状态</td>
-        <td>操作</td> 
-    </tr>
-    
     {{#each collection}}
         <tr id="user-{{this.id}}">
             <td>{{this.id}}</td>
@@ -100,8 +72,7 @@
 
 <!-- 使用databind -->
 <script type="text/javascript">
-    var userList = {%json_encode($userList)%};
-    App.User.refresh(userList, {clear: true});
+    window.userList = {%json_encode($userList)%};
 </script>
 
 <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
