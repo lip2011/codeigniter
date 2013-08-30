@@ -44,6 +44,22 @@ class User extends MY_Controller
 
     public function create()
     {
-       echo true;
+        $params = $this->getPost();
+        unset($params['password_confirm']);
+        echo $this->db->insert('users', $params);
+    }
+
+    public function getUserListByPage()
+    {
+        $page = $this->getPost('page');
+        $start = ($page - 1) * $this->_pageSize;
+
+        $userList = $this->db->order_by('id', 'desc')->limit($this->_pageSize, $start)->get('users')->result_array();
+
+        if (!empty($userList)) {
+            echo json_encode($userList);
+        } else {
+            echo false;
+        }
     }
 }

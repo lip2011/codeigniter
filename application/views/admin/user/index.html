@@ -11,34 +11,37 @@
         <div class="span12">
             <h3><small>用户列表</small></h3>        
             <table class="table table-bordered table-hover" id="user_table">
-                <tr style="background:#DFF2F5;">
-                    <td>#</td>
-                    <td>姓名</td>
-                    <td>登陆名</td>
-                    <td>手机</td>
-                    <td>邮箱</td>
-                    <td>状态</td>
-                    <td>操作</td> 
-                </tr>      
-                
-                {%foreach from=$userList item=data key=index%}
-                    <tr>
-                        <td>{%$data.id%}</td>
-                        <td>{%$data.name%}</td>
-                        <td>{%$data.login_name%}</td>
-                        <td>{%$data.phone%}</td>
-                        <td>{%$data.email%}</td>
-                        <td>{%getUserStatusName($data.status)%}</td>
-                        <td>
-                           <!--  <a id="edit_user_link" class="user-show-dialog" data-gid="{%$data.id%}" data-gname="{%$data.name%}" data-gloginname="{%$data.login_name%}" data-gemail="{%$data.email%}" data-gstatus="{%$data.status%}" data-operation="edit_user">
-                                <i class="icon-pencil"></i>修改
-                            </a> -->
-                            <a id="edit_user_link" class="user-show-dialog" data-gid="{%$index%}" data-operation="edit_user">
-                                <i class="icon-pencil"></i>修改
-                            </a>
-                        </td>
+                <thead>
+                    <tr style="background:#DFF2F5;">
+                        <td>#</td>
+                        <td>姓名</td>
+                        <td>登陆名</td>
+                        <td>手机</td>
+                        <td>邮箱</td>
+                        <td>状态</td>
+                        <td>操作</td> 
                     </tr>
-                {%/foreach%}
+                </thead>
+                <tbody>
+                    {%foreach from=$userList item=data key=index%}
+                        <tr>
+                            <td>{%$data.id%}</td>
+                            <td>{%$data.name%}</td>
+                            <td>{%$data.login_name%}</td>
+                            <td>{%$data.phone%}</td>
+                            <td>{%$data.email%}</td>
+                            <td>{%getUserStatusName($data.status)%}</td>
+                            <td>
+                               <!--  <a id="edit_user_link" class="user-show-dialog" data-gid="{%$data.id%}" data-gname="{%$data.name%}" data-gloginname="{%$data.login_name%}" data-gemail="{%$data.email%}" data-gstatus="{%$data.status%}" data-operation="edit_user">
+                                    <i class="icon-pencil"></i>修改
+                                </a> -->
+                                <a id="edit_user_link" class="user-show-dialog" data-gid="{%$data.id%}" data-operation="edit_user">
+                                    <i class="icon-pencil"></i>修改
+                                </a>
+                            </td>
+                        </tr>
+                    {%/foreach%}
+                </tbody>
             </table>
 
             {%include file="share/pager.html"%}
@@ -64,9 +67,41 @@
 <!-- 使用handlebars -->
 
 
+
+<script id="user_list_script" type="text/x-handlebars-template">
+
+    <tr style="background:#DFF2F5;">
+        <td>#</td>
+        <td>姓名</td>
+        <td>登陆名</td>
+        <td>手机</td>
+        <td>邮箱</td>
+        <td>状态</td>
+        <td>操作</td> 
+    </tr>
+    
+    {{#each collection}}
+        <tr id="user-{{this.id}}">
+            <td>{{this.id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.login_name}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.status}}</td>
+            <td>
+                <a id="edit_user_link" class="user-show-dialog" data-gid="{{this.id}}" data-operation="edit_user">
+                    <i class="icon-pencil"></i>修改
+                </a>
+            </td>
+        </tr>
+    {{/each}}
+</script>
+
+
 <!-- 使用databind -->
 <script type="text/javascript">
-    window.userList = {%json_encode($userList)%};
+    var userList = {%json_encode($userList)%};
+    App.User.refresh(userList, {clear: true});
 </script>
 
 <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -97,12 +132,42 @@
                 </div>
             </div>
 
+            <div class="control-group">
+                <label class="control-label" for="Password">密码</label>
+                <div class="controls">
+                    <input type="text" id="Password" class="text-input" name="passwd" placeholder="Password" data-bind-value="recode.passwd">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="PasswordConfirm">确认密码</label>
+                <div class="controls">
+                    <input type="text" id="PasswordConfirm" class="text-input" name="password_confirm" placeholder="Password Confirm" data-bind-value="recode.password_confirm">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">性别</label>
+                <div class="controls row">
+                    <div class="span1">
+                        <label class="radio">
+                            <input type="radio" name="sex" value="b" data-bind-checked="recode.sex">男
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <label class="radio">
+                            <input type="radio" name="sex" value="g" data-bind-checked="recode.sex">女
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <div class="control-group" data-bind-hide="recode.id|blank">
                 <label class="control-label">状态</label>
                 <div class="controls row">
                     <div class="span1">
                         <label class="radio">
-                            <input type="radio" name="status" value="1" data-bind-checked="recode.status|eq('1')">活跃
+                            <input type="radio" name="status" value="1" checked="checked" data-bind-checked="recode.status|eq('1')">活跃
                         </label>
                     </div>
                     <div class="span1">
@@ -128,6 +193,4 @@
 </div>
 
 <!-- 使用databind -->
-
-
 {%include file="share/footer.html"%}

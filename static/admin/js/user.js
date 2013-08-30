@@ -1,3 +1,7 @@
+window.App = {};
+App.User = Spine.Model.sub();
+App.User.configure('User', 'id', 'email', 'name', 'login_name', 'passwd', 'password_confirm', 'sex', 'status');
+
 $().ready(function(){
 
     //设置验证规则,根据“name”属性来验证
@@ -98,28 +102,27 @@ $().ready(function(){
 
     $('#add_user_link, #user_table a').on('click', function(){
         var dataOperation = $(this).attr('data-operation');
-        var id = parseInt($(this).attr('data-gid'));
+        var id = $(this).attr('data-gid');
+        var user = null;
 
         if (dataOperation == 'add_user') {
             $('#pop_title').html('添加用户');
             $('#user_form').attr('action', UrlConfig.adminBaseUrl + '/user/create');
 
-            var user = {name: '', login_name: '', email: ''};
-            rivets.bind($('#user_form'), {recode: user});
+            user = new App.User;
+            user.sex = 'b';
         } else {
             $('#pop_title').html('修改用户信息');
             $('#user_form').attr('action', UrlConfig.adminBaseUrl + '/user/update');
 
-            var user = userList[id];
-            console.log(user);
-            rivets.bind($('#user_form'), {recode: user});
+            user = App.User.findByAttribute('id', id);
         }
+        console.log(user);
+        rivets.bind($('#user_form'), {recode: user});
 
         $('#user_pop_model').modal('toggle');
 
-   
         $('#user_form').validate({
-            debug: true,
             rules: {
                 name: {
                    required: true,
@@ -128,8 +131,13 @@ $().ready(function(){
                     required: true,
                     email: true
                 },
-                login_name: {
+                passwd: {
                    required: true,
+                },
+                password_confirm: {
+                   required: true,
+                   //Password is a id
+                   equalTo: '#Password'
                 }
             },
             submitHandler: function(form) { 
@@ -137,10 +145,11 @@ $().ready(function(){
                     type: 'post',
                     dataType: 'json',
                     url: UrlConfig.adminBaseUrl + '/user/create',
-                    data: {},
+                    data: user.attributes(),
                     success: function(){
-                        $.user.showSuccess();
+                        //$.user.showSuccess();
                         $('#user_pop_model').modal('hide');
+                        window.location.reload();
                     },
                     error: function(){
                         alert("error");
@@ -151,36 +160,41 @@ $().ready(function(){
 
         $('#user_pop_model').on('hide', function(){
             $('#user_form').data('validator').resetForm();
-        })
+        });
     });
+
+    $('#pagerDiv a').on('click', function(){
+        var page = $(this).data('page');
+        $.user.getUserListByPage(page);
+    });
+
+
+    App.User.bind('refresh', function(){
+        var records = App.User.all()
+        var template = Handlebars.compile($('#user_list_script').html());
+        var html = template({collection: records});
+        $('#user_table').html(html);
+    })
 })
 
-// $.user = {
+$.user = {
 
-//     showSuccess: function() {
-//         alert("success");
-//     }
-// }
+    getUserListByPage: function(page) {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: UrlConfig.adminBaseUrl + '/user/getUserListByPage',
+            data: {page: page},
+            success: function(response){
+                alert("get success");
+                
+                App.User.refresh(response, {clear: true})
 
-
-
-//  http://stackoverflow.com/questions/122102/most-efficient-way-to-clone-an-object
-// window.App = {}
-
-// App.User = Spine.Model.sub();
-// App.User.configure("User", "name", "age");
-
-// App.User.refresh([{id: 1, name: 'a', age: '1'}, {id: 2, name: 'b', age: '2'}], {clear: true})
-
-// App.User.first()
-// App.User.findByAttribute('id', 1)
-//  window.App || (window.App = {});
-
-// App.User = Spine.Model.sub();
-// App.User.configure("User", "name", "age");
-
-
-// App.User.refresh([{id: 1, name: 'a', age: '1'}, {id: 2, name: 'b', age: '2'}], {clear: true})
-
-// App.User.first()
-// App.User.findByAttribute('id', 1)
+                //$('#user_table').html(html);
+            },
+            error: function(){
+                alert("get error");
+            }
+        });
+    },
+}
