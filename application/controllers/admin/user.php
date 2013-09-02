@@ -13,14 +13,57 @@ class User extends MY_Controller
         $userCount = $this->db->count_all('users');
         $userList = $this->db->order_by('id', 'desc')->limit($this->_pageSize, $start)->get('users')->result_array();
 
-        $pager = array( 'pageIndex' => $page,
-                        'requestUrl' => 'user/index',
-                        'maxPager' => ceil($userCount / $this->_pageSize),
-                        'pageParam' => '&type=' . $type);
+        $maxPage = ceil($userCount / $this->_pageSize);
+        // $pager = array( 'pageIndex' => $page,
+        //                 'requestUrl' => 'user/index',
+        //                 'maxPage' => $maxPage,
+        //                 'pageParam' => '&type=' . $type);
 
+        $showPageDiv = false;
+        $havePrePage = false;
+        $prePage = null;
+        $haveNextPage = false;
+        $nextPage = null;
+        if ($maxPage > 1) {
+            $showPageDiv = true;
+        }
+        if ($page < $maxPage) {
+            $haveNextPage = true;
+            $nextPage = $page + 1;
+        }
+        if ($page > 1) {
+            $havePrePage = true;
+            $prePage = $page - 1;
+        }
+
+        $pageIndexArray = array();
+        for ($i = 1; $i <= $maxPage; $i++) {
+            $pageIndexArray[$i]['pageIndex'] = $i;
+            $pageIndexArray[$i]['isCurrentPage'] = false;
+            if ($page == $i) {
+                $pageIndexArray[$i]['isCurrentPage'] = true;
+            }
+        }
+
+//         echo "<pre>";
+//         print_r($userList);
+//         echo "</pre>";
+//         echo "ssssss<br>";
+//         echo "<pre>";
+//         print_r($pageIndexArray);
+//         echo "</pre>";
+// exit;
+        $pager = array( 'page' => $page,
+                        'showPageDiv' => $showPageDiv,
+                        'havePrePage' => $havePrePage,
+                        'prePage' => $prePage,
+                        'haveNextPage' => $haveNextPage,
+                        'nextPage' => $nextPage,
+                        'requestUrl' => 'user/index');
 
         $this->load->helper('user');
 
+        $this->smarty->assign('pageIndexArray', $pageIndexArray);
         $this->smarty->assign('userList', $userList);
         $this->smarty->assign('pager', $pager);
         $this->smarty->display('user/index.html');

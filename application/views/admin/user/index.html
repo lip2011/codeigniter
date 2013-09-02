@@ -27,7 +27,8 @@
                 </tbody>
             </table>
 
-            {%include file="share/pager.html"%}
+            <div id="pagerDiv"></div>
+            <!-- {%include file="share/pager.html"%} -->
         </div>
     </div>
 </div>
@@ -69,10 +70,45 @@
     {{/each}}
 </script>
 
+<script id="userlist_pager_script" type="text/x-handlebars-template">
+    {{#if showPageDiv}}
+        <div class="pagination" id="pagerDiv">
+            <ul style="display: block;">
+                {{#if havePrePage}}
+                    <li data-page="{{prePage}}">
+                        <a>&lt;</a>&nbsp;
+                    </li>
+                {{/if}}
+
+                {{#each pageIndexArray}}
+                    {{#if this.isCurrentPage}}
+                        <li class="active disabled" data-page="{{this.pageIndex}}">
+                            <span>{{this.pageIndex}}</span>
+                        </li>
+                    {{else}}
+                        <li data-page="{{this.pageIndex}}">
+                            <a>
+                                &nbsp;<strong>{{this.pageIndex}}</strong>&nbsp;
+                            </a>
+                        </li>
+                    {{/if}}
+                {{/each}}
+
+                {{#if haveNextPage}}
+                    <li data-page="{{nextPage}}">
+                        <a>&gt;</a>&nbsp;
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+    {{/if}}
+</script>
 
 <!-- 使用databind -->
 <script type="text/javascript">
     window.userList = {%json_encode($userList)%};
+    window.pager = {%json_encode($pager)%};
+    window.pageIndexArray = {%json_encode($pageIndexArray)%}
 </script>
 
 <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
