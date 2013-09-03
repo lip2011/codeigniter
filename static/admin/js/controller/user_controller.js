@@ -17,7 +17,7 @@ var UserController = Spine.Controller.sub({
         $('#user_tbody').html(html);
 
         template = Handlebars.compile($('#userlist_pager_script').html());
-        html = template({pager: pager, pageIndexArray: pageIndexArray});
+        html = template(pager);
         $('#pagerDiv').html(html);
     },
 });

@@ -72,7 +72,7 @@
 
 <script id="userlist_pager_script" type="text/x-handlebars-template">
     {{#if showPageDiv}}
-        <div class="pagination" id="pagerDiv">
+        <div class="pagination" id="">
             <ul style="display: block;">
                 {{#if havePrePage}}
                     <li data-page="{{prePage}}">
@@ -108,7 +108,6 @@
 <script type="text/javascript">
     window.userList = {%json_encode($userList)%};
     window.pager = {%json_encode($pager)%};
-    window.pageIndexArray = {%json_encode($pageIndexArray)%}
 </script>
 
 <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

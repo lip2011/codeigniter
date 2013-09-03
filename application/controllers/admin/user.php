@@ -45,21 +45,14 @@ class User extends MY_Controller
             }
         }
 
-//         echo "<pre>";
-//         print_r($userList);
-//         echo "</pre>";
-//         echo "ssssss<br>";
-//         echo "<pre>";
-//         print_r($pageIndexArray);
-//         echo "</pre>";
-// exit;
         $pager = array( 'page' => $page,
                         'showPageDiv' => $showPageDiv,
                         'havePrePage' => $havePrePage,
                         'prePage' => $prePage,
                         'haveNextPage' => $haveNextPage,
                         'nextPage' => $nextPage,
-                        'requestUrl' => 'user/index');
+                        'requestUrl' => 'user/index',
+                        'pageIndexArray' => $pageIndexArray);
 
         $this->load->helper('user');
 
