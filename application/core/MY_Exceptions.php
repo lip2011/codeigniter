@@ -13,7 +13,7 @@ class MY_Exceptions extends CI_Exceptions
     function log_exception($severity, $message, $filepath, $line)
     {
         parent::log_exception($severity, $message, $filepath, $line);       
-        if ($severity == E_ERROR && !file_exists(dirname(BASEPATH) . '/local')) {
+        if ($severity == E_ERROR && ENVIRONMENT != 'development') {
             $this->_report_error($message);         
         }
     }
