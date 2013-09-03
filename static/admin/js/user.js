@@ -10,6 +10,8 @@
 //     $('#user_tbody').html(html);
 // })
 
+var oldPage = '1';
+
 $().ready(function(){
 
     //设置验证规则,根据“name”属性来验证
@@ -171,33 +173,39 @@ $().ready(function(){
         });
     });
 
-    $('#pagerDiv a').on('click', function(){
-        var page = $(this).data('page');
+    $('#pagerDiv li a').on('click', function(){
+        var page = $(this).parent('li').data('page');
+
         $.user.getUserListByPage(page);
     });
     
-    App.User.refresh(userList, {clear: true});
+    //App.User.refresh(userList, {clear: true});
    
 })
 
 $.user = {
 
     getUserListByPage: function(page) {
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: UrlConfig.adminBaseUrl + '/user/getUserListByPage',
-            data: {page: page},
-            success: function(response){
-                alert("get success");
-                
-                App.User.refresh(response, {clear: true})
+        //oldPage = page;
+        alert(oldPage);
+                $("#pagerDiv li[data-page='"+page+"']").addClass('active disabled');
+                $("#pagerDiv li[data-page='"+oldPage+"']").removeClass('active disabled');
 
-                //$('#user_table').html(html);
-            },
-            error: function(){
-                alert("get error");
-            }
-        });
+        // $.ajax({
+        //     type: 'post',
+        //     dataType: 'json',
+        //     url: UrlConfig.adminBaseUrl + '/user/getUserListByPage',
+        //     data: {page: page},
+        //     success: function(response){
+        //         alert("get success");
+                
+        //         App.User.refresh(response, {clear: true})
+
+        //         //$('#user_table').html(html);
+        //     },
+        //     error: function(){
+        //         alert("get error");
+        //     }
+        // });
     },
 }

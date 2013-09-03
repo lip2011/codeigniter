@@ -2,17 +2,17 @@
     <div class="pagination" id="pagerDiv">
         <ul style="display: block;">
             {%if $pager.pageIndex>1%}
-                <li>
-                    <a data-page="{%$pager.pageIndex-1%}">&lt;</a>&nbsp;
+                <li data-page="{%$pager.pageIndex-1%}">
+                    <a>&lt;</a>&nbsp;
                 </li>
             {%/if%}
 
             {%for $page=1 to $pager.maxPager%}
                 {%if $pager.pageIndex==$page%}
-                    <li class="active disabled"><span>{%$page%}</span></li>
+                    <li class="active disabled" data-page="{%$page%}"><span>{%$page%}</span></li>
                 {%else%}
-                    <li>
-                        <a data-page="{%$page%}">
+                    <li data-page="{%$page%}">
+                        <a>
                             &nbsp;<strong>{%$page%}</strong>&nbsp;
                         </a>
                     </li>
@@ -20,8 +20,8 @@
             {%/for%}
 
             {%if $pager.pageIndex<$pager.maxPager%}
-                <li>
-                    <a data-page="{%$pager.pageIndex+1%}">&gt;</a>&nbsp;
+                <li data-page="{%$pager.pageIndex+1%}">
+                    <a>&gt;</a>&nbsp;
                 </li>
             {%/if%}
         </ul>
