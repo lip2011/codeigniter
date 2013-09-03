@@ -142,4 +142,35 @@ Handlebars.registerHelper('nl2br', function(text) {
     return new Handlebars.SafeString(nl2br);
 });
 
+/**
+* addition
+* a + b
+*/
+Handlebars.registerHelper('addition', function(num, additionNum) {
+
+    // var options;
+
+    // if (typeof options === 'object' && (options.hash != null) && (options.data != null)) {
+    //     options = options.hash;
+    // }
+
+
+    return parseInt(num) + parseInt(additionNum);
+});
+
+/**
+* subtraction
+* a + b
+*/
+Handlebars.registerHelper('subtraction', function(num, subtractionNum) {
+    return parseInt(num) - parseInt(subtractionNum);
+});
+
+
+Handlebars.registerHelper('setIndex', function(index) {
+    return Number(index + 1);
+});
+
+
+
 }));
