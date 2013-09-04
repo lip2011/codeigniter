@@ -33,4 +33,5 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-copy'
 
   grunt.registerTask 'default', ['watch']
-  grunt.registerTask 'build',   ['coffee', 'concat', 'uglify']
+  grunt.registerTask 'build',   ['coffee']
+  grunt.registerTask 'concat_and_uglify',   ['concat', 'uglify']

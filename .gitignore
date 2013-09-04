@@ -8,3 +8,4 @@ application/config/testing/config.php
 application/config/testing/database.php
 local
 node_modules/
+Gruntfile.js
