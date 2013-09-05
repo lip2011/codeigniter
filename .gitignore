@@ -9,3 +9,4 @@ application/config/testing/database.php
 local
 node_modules/
 Gruntfile.js
+src_coffee/**/*.js

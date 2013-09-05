@@ -34,170 +34,167 @@
 
 
 
-<!-- 使用handlebars -->
-<!-- <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"></h3>
+    <!-- 使用handlebars -->
+    <!-- <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"></h3>
+        </div>
+        <div class="modal-body" id="modal_body">
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">撤销</button>
+        </div>
     </div>
-    <div class="modal-body" id="modal_body">
+
+    {%include file="user/user_pop_handlebars.html"%} -->
+    <!-- 使用handlebars -->
+
+    <div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="pop_title"></h3>
+        </div>
+        <div class="modal-body" id="modal_body">
+            <form class="form-horizontal" id="user_form" method="post" action="">
+                <div class="control-group">
+                    <label class="control-label" for="user_email">邮件地址</label>
+                    <div class="controls">
+                        <input type="text" id="user_email" name="email" class="text-input" placeholder="Email" data-bind-value="recode.email">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="user_name">姓名</label>
+                    <div class="controls">
+                        <input type="text" id="user_name" name="name" class="text-input" placeholder="Name" data-bind-value="recode.name">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="user_login_name">登陆名</label>
+                    <div class="controls">
+                        <input type="text" id="user_login_name" class="text-input" name="login_name" placeholder="LoginName" data-bind-value="recode.login_name">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="Password">密码</label>
+                    <div class="controls">
+                        <input type="text" id="Password" class="text-input" name="passwd" placeholder="Password" data-bind-value="recode.passwd">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="PasswordConfirm">确认密码</label>
+                    <div class="controls">
+                        <input type="text" id="PasswordConfirm" class="text-input" name="password_confirm" placeholder="Password Confirm" data-bind-value="recode.password_confirm">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">性别</label>
+                    <div class="controls row">
+                        <div class="span1">
+                            <label class="radio">
+                                <input type="radio" name="sex" value="b" data-bind-checked="recode.sex">男
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <label class="radio">
+                                <input type="radio" name="sex" value="g" data-bind-checked="recode.sex">女
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind-hide="recode.id|blank">
+                    <label class="control-label">状态</label>
+                    <div class="controls row">
+                        <div class="span1">
+                            <label class="radio">
+                                <input type="radio" name="status" value="1" checked="checked" data-bind-checked="recode.status|eq('1')">活跃
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <label class="radio">
+                                <input type="radio" name="status" value="2" data-bind-checked="recode.status|eq('2')">冻结
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls row">
+                        <div class="span1">
+                            <button type="button" class="btn btn-primary" id="submitButton">确定</button>
+                        </div>
+                        <div class="span1">
+                            <button type="reset" class="btn">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">撤销</button>
-    </div>
-</div>
 
-{%include file="user/user_pop_handlebars.html"%} -->
-<!-- 使用handlebars -->
+    <script id="user_list_script" type="text/x-handlebars-template">
+        {{#each collection}}
+            <tr id="user-{{this.id}}">
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.login_name}}</td>
+                <td>{{this.phone}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.status}}</td>
+                <td>
+                    <a id="edit_user_link" class="user-show-dialog" data-gid="{{this.id}}" data-operation="edit_user">
+                        <i class="icon-pencil"></i>修改
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+    </script>
 
-
-
-<script id="user_list_script" type="text/x-handlebars-template">
-    {{#each collection}}
-        <tr id="user-{{this.id}}">
-            <td>{{this.id}}</td>
-            <td>{{this.name}}</td>
-            <td>{{this.login_name}}</td>
-            <td>{{this.phone}}</td>
-            <td>{{this.email}}</td>
-            <td>{{this.status}}</td>
-            <td>
-                <a id="edit_user_link" class="user-show-dialog" data-gid="{{this.id}}" data-operation="edit_user">
-                    <i class="icon-pencil"></i>修改
-                </a>
-            </td>
-        </tr>
-    {{/each}}
-</script>
-
-<script id="userlist_pager_script" type="text/x-handlebars-template">
-    {{#if showPageDiv}}
-        <div class="pagination" id="">
-            <ul style="display: block;">
-                {{#if havePrePage}}
-                    <li data-page="{{prePage}}">
-                        <a>&lt;</a>&nbsp;
-                    </li>
-                {{/if}}
-
-                {{#each pageIndexArray}}
-                    {{#if this.isCurrentPage}}
-                        <li class="active disabled" data-page="{{this.pageIndex}}">
-                            <span>{{this.pageIndex}}</span>
-                        </li>
-                    {{else}}
-                        <li data-page="{{this.pageIndex}}">
-                            <a>
-                                &nbsp;<strong>{{this.pageIndex}}</strong>&nbsp;
-                            </a>
+    <script id="userlist_pager_script" type="text/x-handlebars-template">
+        {{#if showPageDiv}}
+            <div class="pagination" id="">
+                <ul style="display: block;">
+                    {{#if havePrePage}}
+                        <li data-page="{{prePage}}">
+                            <a>&lt;</a>&nbsp;
                         </li>
                     {{/if}}
-                {{/each}}
 
-                {{#if haveNextPage}}
-                    <li data-page="{{nextPage}}">
-                        <a>&gt;</a>&nbsp;
-                    </li>
-                {{/if}}
-            </ul>
-        </div>
-    {{/if}}
-</script>
+                    {{#each pageIndexArray}}
+                        {{#if this.isCurrentPage}}
+                            <li class="active disabled" data-page="{{this.pageIndex}}">
+                                <span>{{this.pageIndex}}</span>
+                            </li>
+                        {{else}}
+                            <li data-page="{{this.pageIndex}}">
+                                <a>
+                                    &nbsp;<strong>{{this.pageIndex}}</strong>&nbsp;
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/each}}
 
-<!-- 使用databind -->
-<script type="text/javascript">
-    window.userList = {%json_encode($userList)%};
-    window.pager = {%json_encode($pager)%};
-</script>
-
-<div id="user_pop_model" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="pop_title"></h3>
-    </div>
-    <div class="modal-body" id="modal_body">
-        <form class="form-horizontal" id="user_form" method="post" action="">
-            <div class="control-group">
-                <label class="control-label" for="user_email">邮件地址</label>
-                <div class="controls">
-                    <input type="text" id="user_email" name="email" class="text-input" placeholder="Email" data-bind-value="recode.email">
-                </div>
+                    {{#if haveNextPage}}
+                        <li data-page="{{nextPage}}">
+                            <a>&gt;</a>&nbsp;
+                        </li>
+                    {{/if}}
+                </ul>
             </div>
+        {{/if}}
+    </script>
 
-            <div class="control-group">
-                <label class="control-label" for="user_name">姓名</label>
-                <div class="controls">
-                    <input type="text" id="user_name" name="name" class="text-input" placeholder="Name" data-bind-value="recode.name">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label" for="user_login_name">登陆名</label>
-                <div class="controls">
-                    <input type="text" id="user_login_name" class="text-input" name="login_name" placeholder="LoginName" data-bind-value="recode.login_name">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label" for="Password">密码</label>
-                <div class="controls">
-                    <input type="text" id="Password" class="text-input" name="passwd" placeholder="Password" data-bind-value="recode.passwd">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label" for="PasswordConfirm">确认密码</label>
-                <div class="controls">
-                    <input type="text" id="PasswordConfirm" class="text-input" name="password_confirm" placeholder="Password Confirm" data-bind-value="recode.password_confirm">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">性别</label>
-                <div class="controls row">
-                    <div class="span1">
-                        <label class="radio">
-                            <input type="radio" name="sex" value="b" data-bind-checked="recode.sex">男
-                        </label>
-                    </div>
-                    <div class="span1">
-                        <label class="radio">
-                            <input type="radio" name="sex" value="g" data-bind-checked="recode.sex">女
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-group" data-bind-hide="recode.id|blank">
-                <label class="control-label">状态</label>
-                <div class="controls row">
-                    <div class="span1">
-                        <label class="radio">
-                            <input type="radio" name="status" value="1" checked="checked" data-bind-checked="recode.status|eq('1')">活跃
-                        </label>
-                    </div>
-                    <div class="span1">
-                        <label class="radio">
-                            <input type="radio" name="status" value="2" data-bind-checked="recode.status|eq('2')">冻结
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <div class="controls row">
-                    <div class="span1">
-                        <button type="submit" class="btn btn-primary">添加</button>
-                    </div>
-                    <div class="span1">
-                        <button type="reset" class="btn">重置</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
+    <!-- 使用databind -->
+    <script type="text/javascript">
+        window.userList = {%json_encode($userList)%};
+        window.pager = {%json_encode($pager)%};
+    </script>
 </div>
 <!-- 使用databind -->
 {%include file="share/footer.html"%}

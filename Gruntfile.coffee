@@ -5,7 +5,8 @@ module.exports = (grunt) ->
     coffee:
       all:
         files:
-          'static/admin/js/test.js': 'src_coffee/admin/test.coffee'
+          'static/admin/js/controller/user_controller.js': 'src_coffee/admin/controller/user_controller.coffee'
+          'static/admin/js/model/user_model.js': 'src_coffee/admin/model/user_model.coffee'
 
     concat:
       all:
