@@ -1,7 +1,7 @@
 window.App ||= {}
 
 $(document).ready ->
-    App.UserCon = new App.UserController
+    new App.UserController
         el: $('div#usersDiv')
 
 class App.UserController extends Spine.Controller
@@ -20,15 +20,15 @@ class App.UserController extends Spine.Controller
         '#userlist_pager_script': 'userlist_pager_script'
         '#user_pop_model': 'user_pop_model'
         '#user_form': 'user_form'
+        'div#user_pop_model button#submitButton': 'submitButton'
 
     events:
         'click #add_user_link': 'showPopWindow'
-        'hidden div#user_pop_model': 'hidePopWindow'
-        'click #submitButton': 'formSubmit'
+        # 'hidden div#user_pop_model': 'hidePopWindow'
+        # 'click div#user_pop_model button#submitButton': 'formSubmit'
 
     userRefresh: =>
         records = User.all()
-        console.log records     
         template = Handlebars.compile(@user_list_script.html())
         html = template({collection: records})
         $('#user_tbody').html(html)
@@ -37,8 +37,7 @@ class App.UserController extends Spine.Controller
         html = template(window.pager)
         $('#pagerDiv').html(html)
 
-    showPopWindow: (e)->
-        @log "  show pop window"
+    showPopWindow: (e) ->
         @user_form.data('validator').resetForm()
 
         $node = $(e.target)
@@ -59,8 +58,9 @@ class App.UserController extends Spine.Controller
 
         rivets.bind(@user_form, {recode: @user})
         @user_pop_model.modal('show')
+        @submitButton.bind('click', @formSubmit)
 
-    hidePopWindow: (e)->
+    hidePopWindow: (e) ->
         @log "  hide pop window"
         @user_form.data('validator').resetForm()
         #@validation.resetForm()
@@ -81,16 +81,18 @@ class App.UserController extends Spine.Controller
                     equalTo: '#Password'
 
     formSubmit: (e) ->
+        console.log "formSubmit formSubmitformSubmit"
+        console.log @user
 
-        if @user_form.valid()
+        user_form = $('#user_form')
+        if user_form.valid()
             $.ajax
                 type: 'post'
                 dataType: 'json'
-                url: $(e.target).attr()
-                data: @user.attributes('action')
+                url: $(e.target).attr('action')
+                data: @user.attributes()
                 success: (response) ->
-                    @user_pop_model.modal('hide')
-                    
-                    #User.create(response)
+                    window.loction.reload()
                 error: ->
                     alert 'error'
+                    @user_pop_model.modal('hide')

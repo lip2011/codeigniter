@@ -6,7 +6,7 @@
   window.App || (window.App = {});
 
   $(document).ready(function() {
-    return App.UserCon = new App.UserController({
+    return new App.UserController({
       el: $('div#usersDiv')
     });
   });
@@ -33,19 +33,17 @@
       '#user_list_script': 'user_list_script',
       '#userlist_pager_script': 'userlist_pager_script',
       '#user_pop_model': 'user_pop_model',
-      '#user_form': 'user_form'
+      '#user_form': 'user_form',
+      'div#user_pop_model button#submitButton': 'submitButton'
     };
 
     UserController.prototype.events = {
-      'click #add_user_link': 'showPopWindow',
-      'hidden div#user_pop_model': 'hidePopWindow',
-      'click #submitButton': 'formSubmit'
+      'click #add_user_link': 'showPopWindow'
     };
 
     UserController.prototype.userRefresh = function() {
       var html, records, template;
       records = User.all();
-      console.log(records);
       template = Handlebars.compile(this.user_list_script.html());
       html = template({
         collection: records
@@ -58,7 +56,6 @@
 
     UserController.prototype.showPopWindow = function(e) {
       var $node, dataOperation, id;
-      this.log("  show pop window");
       this.user_form.data('validator').resetForm();
       $node = $(e.target);
       dataOperation = $node.data('operation');
@@ -76,7 +73,8 @@
       rivets.bind(this.user_form, {
         recode: this.user
       });
-      return this.user_pop_model.modal('show');
+      this.user_pop_model.modal('show');
+      return this.submitButton.bind('click', this.formSubmit);
     };
 
     UserController.prototype.hidePopWindow = function(e) {
@@ -106,17 +104,22 @@
     };
 
     UserController.prototype.formSubmit = function(e) {
-      if (this.user_form.valid()) {
+      var user_form;
+      console.log("formSubmit formSubmitformSubmit");
+      console.log(this.user);
+      user_form = $('#user_form');
+      if (user_form.valid()) {
         return $.ajax({
           type: 'post',
           dataType: 'json',
-          url: $(e.target).attr(),
-          data: this.user.attributes('action'),
+          url: $(e.target).attr('action'),
+          data: this.user.attributes(),
           success: function(response) {
-            return this.user_pop_model.modal('hide');
+            return window.loction.reload();
           },
           error: function() {
-            return alert('error');
+            alert('error');
+            return this.user_pop_model.modal('hide');
           }
         });
       }
