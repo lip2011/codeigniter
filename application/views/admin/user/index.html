@@ -162,7 +162,7 @@
 
     <script id="userlist_pager_script" type="text/x-handlebars-template">
         {{#if showPageDiv}}
-            <div class="pagination" id="">
+            <div class="pagination" id="pagination">
                 <ul style="display: block;">
                     {{#if havePrePage}}
                         <li data-page="{{prePage}}">
@@ -172,7 +172,7 @@
 
                     {{#each pageIndexArray}}
                         {{#if this.isCurrentPage}}
-                            <li class="active disabled" data-page="{{this.pageIndex}}">
+                            <li class="active disabled">
                                 <span>{{this.pageIndex}}</span>
                             </li>
                         {{else}}

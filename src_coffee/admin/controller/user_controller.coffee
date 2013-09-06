@@ -24,6 +24,7 @@ class App.UserIndexCtrl extends Spine.Controller
 
     events:
         'click #add_user_link': 'showPopWindow'
+        'click div#pagination a': 'getNextOrPreUsers'
 
     userRefresh: =>
         records = UserModle.all()
@@ -38,6 +39,25 @@ class App.UserIndexCtrl extends Spine.Controller
     showPopWindow: (event) ->
         @popModalCtrl.showPopWindow(event)
 
+    getNextOrPreUsers: (e) ->
+        @log $(e.target)
+        @log $(e.target).parents('li').data('page')
+
+        $.isLoading({ text: "Loading" });
+
+        page = $(e.target).parents('li').data('page')
+        $.ajax
+            type: 'post'
+            dataType: 'json'
+            url: UrlConfig.adminBaseUrl + '/user/getNextOrPrePageUsers'
+            data: {page: page}
+            success: (response, textStatus, xhr) ->
+                window.userList = response.userList
+                window.pager = response.pager
+                UserModle.refresh(window.userList, {clear: true})
+                setTimeout (->
+                  $.isLoading "hide"
+                ), 2000
 
 class App.UserPopWindowCtrl extends Spine.Controller
 

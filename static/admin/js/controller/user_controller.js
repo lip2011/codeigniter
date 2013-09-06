@@ -38,7 +38,8 @@
     };
 
     UserIndexCtrl.prototype.events = {
-      'click #add_user_link': 'showPopWindow'
+      'click #add_user_link': 'showPopWindow',
+      'click div#pagination a': 'getNextOrPreUsers'
     };
 
     UserIndexCtrl.prototype.userRefresh = function() {
@@ -56,6 +57,34 @@
 
     UserIndexCtrl.prototype.showPopWindow = function(event) {
       return this.popModalCtrl.showPopWindow(event);
+    };
+
+    UserIndexCtrl.prototype.getNextOrPreUsers = function(e) {
+      var page;
+      this.log($(e.target));
+      this.log($(e.target).parents('li').data('page'));
+      $.isLoading({
+        text: "Loading"
+      });
+      page = $(e.target).parents('li').data('page');
+      return $.ajax({
+        type: 'post',
+        dataType: 'json',
+        url: UrlConfig.adminBaseUrl + '/user/getNextOrPrePageUsers',
+        data: {
+          page: page
+        },
+        success: function(response, textStatus, xhr) {
+          window.userList = response.userList;
+          window.pager = response.pager;
+          UserModle.refresh(window.userList, {
+            clear: true
+          });
+          return setTimeout((function() {
+            return $.isLoading("hide");
+          }), 2000);
+        }
+      });
     };
 
     return UserIndexCtrl;

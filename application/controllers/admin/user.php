@@ -63,9 +63,9 @@ class User extends MY_Controller
         $this->output->set_header("Content-Type: application/json;charset:utf-8");
 
         if (!empty($userList)) {
-            echo json_encode($userList);
+            echo json_encode(array('userList' => $userList, 'pager' => $pager));
         } else {
-            echo false;
+            echo json_encode(array());
         }
     }
 }
