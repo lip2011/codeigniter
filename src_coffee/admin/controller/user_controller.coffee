@@ -1,34 +1,32 @@
 window.App ||= {}
 
 $(document).ready ->
-    new App.UserController
+    App.user_popWindow_ctrl = new App.UserPopWindowCtrl
+        el: $('#user_pop_model')
+
+    App.user_index_ctrl = new App.UserIndexCtrl
         el: $('div#usersDiv')
+        popModalCtrl: App.user_popWindow_ctrl
 
-class App.UserController extends Spine.Controller
+class App.UserIndexCtrl extends Spine.Controller
 
-    User = App.UserModel
+    UserModle = App.User
     
     constructor: ->
+        @popModalCtrl = null
         super
-        User.bind('refresh create', @userRefresh)
-        User.refresh(window.userList, {clear: true})
-        @setFormValidationRules()
-        @user = null
+        UserModle.bind('refresh create', @userRefresh)
+        UserModle.refresh(window.userList, {clear: true})
 
     elements:
         '#user_list_script': 'user_list_script'
         '#userlist_pager_script': 'userlist_pager_script'
-        '#user_pop_model': 'user_pop_model'
-        '#user_form': 'user_form'
-        'div#user_pop_model button#submitButton': 'submitButton'
 
     events:
         'click #add_user_link': 'showPopWindow'
-        # 'hidden div#user_pop_model': 'hidePopWindow'
-        # 'click div#user_pop_model button#submitButton': 'formSubmit'
 
     userRefresh: =>
-        records = User.all()
+        records = UserModle.all()
         template = Handlebars.compile(@user_list_script.html())
         html = template({collection: records})
         $('#user_tbody').html(html)
@@ -37,10 +35,32 @@ class App.UserController extends Spine.Controller
         html = template(window.pager)
         $('#pagerDiv').html(html)
 
-    showPopWindow: (e) ->
-        @user_form.data('validator').resetForm()
+    showPopWindow: (event) ->
+        @popModalCtrl.showPopWindow(event)
 
-        $node = $(e.target)
+
+class App.UserPopWindowCtrl extends Spine.Controller
+
+    UserModle = App.User
+
+    constructor: ->
+        super
+        @user = null
+        @setFormValidationRules()
+
+    elements:
+        '#user_form': 'user_form'
+        'button#submitButton': 'submitButton'
+
+    events:
+        'hide': 'hidePopWindow'
+        'click button#submitButton': 'formSubmit'
+
+    showPopWindow: (event) ->
+        @log "UserPopWindowCtrl showPopWindow"
+        console.log $._data($(event.target)[0], 'events')
+
+        $node = $(event.target)
         dataOperation = $node.data('operation')
         id = $node.data('gid')
 
@@ -48,21 +68,21 @@ class App.UserController extends Spine.Controller
             $('#pop_title').html('添加用户')
             @user_form.attr('action', UrlConfig.adminBaseUrl + '/user/create')
 
-            @user = new User
+            @user = new UserModle
             @user.sex = 'b'
         else 
             $('#pop_title').html('修改用户信息')
             @user_form.attr('action', UrlConfig.adminBaseUrl + '/user/update')
 
-            @user = User.findByAttribute('id', id)
+            @user = UserModle.findByAttribute('id', id)
 
         rivets.bind(@user_form, {recode: @user})
-        @user_pop_model.modal('show')
-        @submitButton.bind('click', @formSubmit)
+        @el.modal('show')
 
-    hidePopWindow: (e) ->
+    hidePopWindow: ->
         @log "  hide pop window"
         @user_form.data('validator').resetForm()
+        $('#messageDiv').hide()
         #@validation.resetForm()
 
     setFormValidationRules: ->
@@ -82,17 +102,20 @@ class App.UserController extends Spine.Controller
 
     formSubmit: (e) ->
         console.log "formSubmit formSubmitformSubmit"
-        console.log @user
+        console.log $(e.target)
 
-        user_form = $('#user_form')
-        if user_form.valid()
+        url = $(e.target).parents('form').attr('action')
+        if @user_form.valid()
             $.ajax
                 type: 'post'
                 dataType: 'json'
-                url: $(e.target).attr('action')
+                url: url
                 data: @user.attributes()
-                success: (response) ->
-                    window.loction.reload()
+                success: (response, textStatus, xhr) ->
+                    console.log '----------'
+                    console.log response
+                    console.log textStatus
+                    console.log xhr
+                    window.location.reload()
                 error: ->
-                    alert 'error'
-                    @user_pop_model.modal('hide')
+                    $('#messageDiv').show()

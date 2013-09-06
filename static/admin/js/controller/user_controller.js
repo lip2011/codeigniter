@@ -6,44 +6,44 @@
   window.App || (window.App = {});
 
   $(document).ready(function() {
-    return new App.UserController({
-      el: $('div#usersDiv')
+    App.user_popWindow_ctrl = new App.UserPopWindowCtrl({
+      el: $('#user_pop_model')
+    });
+    return App.user_index_ctrl = new App.UserIndexCtrl({
+      el: $('div#usersDiv'),
+      popModalCtrl: App.user_popWindow_ctrl
     });
   });
 
-  App.UserController = (function(_super) {
-    var User;
+  App.UserIndexCtrl = (function(_super) {
+    var UserModle;
 
-    __extends(UserController, _super);
+    __extends(UserIndexCtrl, _super);
 
-    User = App.UserModel;
+    UserModle = App.User;
 
-    function UserController() {
+    function UserIndexCtrl() {
       this.userRefresh = __bind(this.userRefresh, this);
-      UserController.__super__.constructor.apply(this, arguments);
-      User.bind('refresh create', this.userRefresh);
-      User.refresh(window.userList, {
+      this.popModalCtrl = null;
+      UserIndexCtrl.__super__.constructor.apply(this, arguments);
+      UserModle.bind('refresh create', this.userRefresh);
+      UserModle.refresh(window.userList, {
         clear: true
       });
-      this.setFormValidationRules();
-      this.user = null;
     }
 
-    UserController.prototype.elements = {
+    UserIndexCtrl.prototype.elements = {
       '#user_list_script': 'user_list_script',
-      '#userlist_pager_script': 'userlist_pager_script',
-      '#user_pop_model': 'user_pop_model',
-      '#user_form': 'user_form',
-      'div#user_pop_model button#submitButton': 'submitButton'
+      '#userlist_pager_script': 'userlist_pager_script'
     };
 
-    UserController.prototype.events = {
+    UserIndexCtrl.prototype.events = {
       'click #add_user_link': 'showPopWindow'
     };
 
-    UserController.prototype.userRefresh = function() {
+    UserIndexCtrl.prototype.userRefresh = function() {
       var html, records, template;
-      records = User.all();
+      records = UserModle.all();
       template = Handlebars.compile(this.user_list_script.html());
       html = template({
         collection: records
@@ -54,35 +54,67 @@
       return $('#pagerDiv').html(html);
     };
 
-    UserController.prototype.showPopWindow = function(e) {
+    UserIndexCtrl.prototype.showPopWindow = function(event) {
+      return this.popModalCtrl.showPopWindow(event);
+    };
+
+    return UserIndexCtrl;
+
+  })(Spine.Controller);
+
+  App.UserPopWindowCtrl = (function(_super) {
+    var UserModle;
+
+    __extends(UserPopWindowCtrl, _super);
+
+    UserModle = App.User;
+
+    function UserPopWindowCtrl() {
+      UserPopWindowCtrl.__super__.constructor.apply(this, arguments);
+      this.user = null;
+      this.setFormValidationRules();
+    }
+
+    UserPopWindowCtrl.prototype.elements = {
+      '#user_form': 'user_form',
+      'button#submitButton': 'submitButton'
+    };
+
+    UserPopWindowCtrl.prototype.events = {
+      'hide': 'hidePopWindow',
+      'click button#submitButton': 'formSubmit'
+    };
+
+    UserPopWindowCtrl.prototype.showPopWindow = function(event) {
       var $node, dataOperation, id;
-      this.user_form.data('validator').resetForm();
-      $node = $(e.target);
+      this.log("UserPopWindowCtrl showPopWindow");
+      console.log($._data($(event.target)[0], 'events'));
+      $node = $(event.target);
       dataOperation = $node.data('operation');
       id = $node.data('gid');
       if (dataOperation === 'add_user') {
         $('#pop_title').html('添加用户');
         this.user_form.attr('action', UrlConfig.adminBaseUrl + '/user/create');
-        this.user = new User;
+        this.user = new UserModle;
         this.user.sex = 'b';
       } else {
         $('#pop_title').html('修改用户信息');
         this.user_form.attr('action', UrlConfig.adminBaseUrl + '/user/update');
-        this.user = User.findByAttribute('id', id);
+        this.user = UserModle.findByAttribute('id', id);
       }
       rivets.bind(this.user_form, {
         recode: this.user
       });
-      this.user_pop_model.modal('show');
-      return this.submitButton.bind('click', this.formSubmit);
+      return this.el.modal('show');
     };
 
-    UserController.prototype.hidePopWindow = function(e) {
+    UserPopWindowCtrl.prototype.hidePopWindow = function() {
       this.log("  hide pop window");
-      return this.user_form.data('validator').resetForm();
+      this.user_form.data('validator').resetForm();
+      return $('#messageDiv').hide();
     };
 
-    UserController.prototype.setFormValidationRules = function() {
+    UserPopWindowCtrl.prototype.setFormValidationRules = function() {
       return this.validation = this.user_form.validate({
         rules: {
           name: {
@@ -103,29 +135,32 @@
       });
     };
 
-    UserController.prototype.formSubmit = function(e) {
-      var user_form;
+    UserPopWindowCtrl.prototype.formSubmit = function(e) {
+      var url;
       console.log("formSubmit formSubmitformSubmit");
-      console.log(this.user);
-      user_form = $('#user_form');
-      if (user_form.valid()) {
+      console.log($(e.target));
+      url = $(e.target).parents('form').attr('action');
+      if (this.user_form.valid()) {
         return $.ajax({
           type: 'post',
           dataType: 'json',
-          url: $(e.target).attr('action'),
+          url: url,
           data: this.user.attributes(),
-          success: function(response) {
-            return window.loction.reload();
+          success: function(response, textStatus, xhr) {
+            console.log('----------');
+            console.log(response);
+            console.log(textStatus);
+            console.log(xhr);
+            return window.location.reload();
           },
           error: function() {
-            alert('error');
-            return this.user_pop_model.modal('hide');
+            return $('#messageDiv').show();
           }
         });
       }
     };
 
-    return UserController;
+    return UserPopWindowCtrl;
 
   })(Spine.Controller);
 

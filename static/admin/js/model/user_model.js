@@ -5,17 +5,17 @@
 
   window.App || (window.App = {});
 
-  App.UserModel = (function(_super) {
-    __extends(UserModel, _super);
+  App.User = (function(_super) {
+    __extends(User, _super);
 
-    function UserModel() {
-      _ref = UserModel.__super__.constructor.apply(this, arguments);
+    function User() {
+      _ref = User.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    UserModel.configure('UserModel', 'id', 'email', 'name', 'login_name', 'passwd', 'password_confirm', 'sex', 'status');
+    User.configure('UserModel', 'id', 'email', 'name', 'login_name', 'passwd', 'password_confirm', 'sex', 'status');
 
-    return UserModel;
+    return User;
 
   })(Spine.Model);
 

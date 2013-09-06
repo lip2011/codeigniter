@@ -40,15 +40,27 @@ class User extends MY_Controller
     {
         $params = $this->getPost();
         unset($params['password_confirm']);
-        echo $this->db->insert('users', $params);
+
+        $this->output->set_header("Content-Type: application/json;charset:utf-8");
+
+        if ($this->db->insert('users', $params)) {
+            $this->output->set_status_header('201');
+            echo json_encode(array('lastUserId' => $this->db->insert_id()));
+        } else {
+            $this->output->set_status_header('422');
+            echo json_encode(array('error' => ''));
+        }
     }
 
-    public function getUserListByPage()
+    public function getNextOrPrePageUsers()
     {
         $page = $this->getPost('page');
-        $start = ($page - 1) * $this->_pageSize;
 
-        $userList = $this->db->order_by('id', 'desc')->limit($this->_pageSize, $start)->get('users')->result_array();
+        $this->load->model('user_model');
+        $userList = $this->user_model->getUserList($page);
+        $pager = $this->user_model->buildPager($page);
+
+        $this->output->set_header("Content-Type: application/json;charset:utf-8");
 
         if (!empty($userList)) {
             echo json_encode($userList);

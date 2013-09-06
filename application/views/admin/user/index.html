@@ -55,6 +55,10 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="pop_title"></h3>
         </div>
+        <div id="messageDiv" class="alert alert-error" style="display:none">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            添加失败
+        </div>
         <div class="modal-body" id="modal_body">
             <form class="form-horizontal" id="user_form" method="post" action="">
                 <div class="control-group">
@@ -194,6 +198,18 @@
     <script type="text/javascript">
         window.userList = {%json_encode($userList)%};
         window.pager = {%json_encode($pager)%};
+
+
+        // $(document).ready(function(){
+        //     App.UserPopWindowCtrl = new App.UserCtrl.PopWindow({
+        //         el: $('#user_pop_model')
+        //     })
+
+        //     App.UserIndexCtrl = new App.UserCtrl.Index({
+        //         el: $('div#usersDiv'),
+        //     })
+        // })
+
     </script>
 </div>
 <!-- 使用databind -->
