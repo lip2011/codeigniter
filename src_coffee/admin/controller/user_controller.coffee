@@ -21,15 +21,24 @@ class App.UserIndexCtrl extends Spine.Controller
     elements:
         '#user_list_script': 'user_list_script'
         '#userlist_pager_script': 'userlist_pager_script'
+        '#userListDiv': 'userListDiv'
 
     events:
-        'click #add_user_link': 'showPopWindow'
+        'click #add_user_link, #edit_user_link': 'showPopWindow'
         'click div#pagination a': 'getNextOrPreUsers'
 
     userRefresh: =>
         records = UserModle.all()
         template = Handlebars.compile(@user_list_script.html())
         html = template({collection: records})
+
+        Handlebars.registerHelper "getStatusName", (userStatus) ->
+            statusName = ""
+            if userStatus is 1
+                statusName = "活跃"
+            else
+                statusName = "冻结"
+            statusName
         $('#user_tbody').html(html)
 
         template = Handlebars.compile(@userlist_pager_script.html())
@@ -43,7 +52,9 @@ class App.UserIndexCtrl extends Spine.Controller
         @log $(e.target)
         @log $(e.target).parents('li').data('page')
 
-        $.isLoading({ text: "Loading" });
+        @userListDiv.isLoading
+            text: 'Loading...'
+            position: 'overlay'
 
         page = $(e.target).parents('li').data('page')
         $.ajax
@@ -56,8 +67,8 @@ class App.UserIndexCtrl extends Spine.Controller
                 window.pager = response.pager
                 UserModle.refresh(window.userList, {clear: true})
                 setTimeout (->
-                  $.isLoading "hide"
-                ), 2000
+                    $('#userListDiv').isLoading "hide"
+                ), 1000
 
 class App.UserPopWindowCtrl extends Spine.Controller
 
@@ -66,6 +77,8 @@ class App.UserPopWindowCtrl extends Spine.Controller
     constructor: ->
         super
         @user = null
+        @dataOperation = ''
+        @userIndex = ''
         @setFormValidationRules()
 
     elements:
@@ -78,13 +91,14 @@ class App.UserPopWindowCtrl extends Spine.Controller
 
     showPopWindow: (event) ->
         @log "UserPopWindowCtrl showPopWindow"
-        console.log $._data($(event.target)[0], 'events')
+        # console.log $._data($(event.target)[0], 'events')
 
         $node = $(event.target)
-        dataOperation = $node.data('operation')
-        id = $node.data('gid')
+        @dataOperation = $node.data('operation')
+        @userIndex = $node.data('index')
+        id = String($node.data('gid'))
 
-        if dataOperation == 'add_user'
+        if @dataOperation == 'add_user'
             $('#pop_title').html('添加用户')
             @user_form.attr('action', UrlConfig.adminBaseUrl + '/user/create')
 
@@ -131,11 +145,19 @@ class App.UserPopWindowCtrl extends Spine.Controller
                 dataType: 'json'
                 url: url
                 data: @user.attributes()
-                success: (response, textStatus, xhr) ->
+                success: (response, textStatus, xhr) =>
                     console.log '----------'
-                    console.log response
-                    console.log textStatus
-                    console.log xhr
-                    window.location.reload()
+                    # console.log response
+                    # console.log textStatus
+                    # console.log xhr
+                    if (@dataOperation == 'add_user')
+                        alert 'add success'
+                        window.location.reload()
+                    else
+                        @log 'update success'
+
+                        window.userList[@userIndex] = @user
+                        UserModle.refresh(window.userList, {clear: true})
+                        @el.modal('hide')
                 error: ->
                     $('#messageDiv').show()

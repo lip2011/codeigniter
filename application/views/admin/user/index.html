@@ -7,7 +7,7 @@
         </a>
     </div>
 
-    <div class="row">
+    <div class="row" id="userListDiv">
         <div class="span12">
             <h3><small>用户列表</small></h3>        
             <table class="table table-bordered table-hover" id="user_table">
@@ -152,8 +152,9 @@
                 <td>{{this.email}}</td>
                 <td>{{this.status}}</td>
                 <td>
-                    <a id="edit_user_link" class="user-show-dialog" data-gid="{{this.id}}" data-operation="edit_user">
-                        <i class="icon-pencil"></i>修改
+                    <i class="icon-pencil"></i>
+                    <a id="edit_user_link" class="user-show-dialog" data-gid="{{this.id}}" data-index="{{@index}}" data-operation="edit_user">
+                        修改
                     </a>
                 </td>
             </tr>

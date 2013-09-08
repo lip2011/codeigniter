@@ -52,6 +52,22 @@ class User extends MY_Controller
         }
     }
 
+    public function update()
+    {
+        $params = $this->getPost();
+        unset($params['password_confirm']);
+
+        $this->output->set_header("Content-Type: application/json;charset:utf-8");
+
+        if ($this->db->where('id', $params['id'])->update('users', $params)) {
+            $this->output->set_status_header('201');
+            echo json_encode(array('affectedRows' => $this->db->affected_rows()));
+        } else {
+            $this->output->set_status_header('422');
+            echo json_encode(array('error' => ''));
+        }
+    }
+
     public function getNextOrPrePageUsers()
     {
         $page = $this->getPost('page');

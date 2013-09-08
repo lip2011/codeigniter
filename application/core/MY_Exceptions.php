@@ -18,19 +18,6 @@ class MY_Exceptions extends CI_Exceptions
         }
     }
 
-    function _get_debug_backtrace($br = "<BR>")
-    {
-        $trace = array_slice(debug_backtrace(), 3);
-        $msg = '<code>';
-        foreach($trace as $index => $info) {
-            if (isset($info['file'])) {
-                $msg .= $info['file'] . ':' . $info['line'] . " -> " . $info['function'] . '(' . $info['args'] . ')' . $br;
-            }
-        }
-        $msg .= '</code>';
-        return $msg;
-    }
-
     function _report_error($subject)
     {
         $CI =& get_instance();
@@ -51,6 +38,32 @@ class MY_Exceptions extends CI_Exceptions
         $body .= '<br/><br/>Stacktrace: <br/><br/>';
         $body .= $this->_get_debug_backtrace();
 
-        $CI->email->sendSmtpEmail('[Playab_oa] ' . ENVIRONMENT . ' ERROE HAPPEND', $subject, $body);
+        if (ENVIRONMENT != 'development') {
+            $CI->email->sendSmtpEmail('[Playab_oa] ' . ENVIRONMENT . ' ERROE HAPPEND', $subject, $body);
+        }
+    }
+
+    function _get_debug_backtrace($br = "<BR>")
+    {
+        $trace = array_slice(debug_backtrace(), 3);
+
+        $msg = '<code>';
+        foreach($trace as $index => $info) {
+            $args = '';
+            if (isset($info['file'])) {
+                $msg .= $info['file'] . ',line: ' . $info['line'] . " -> " . $info['function'] . $br;
+                
+                if (!empty($info['args'])) {
+                    $args .= '<pre>';
+                    $args .= json_encode($info['args']);
+                    $args .= '</pre>';
+                }
+
+                $msg .= $args;
+            }
+        }
+        $msg .= '</code>';
+
+        return $msg;
     }
 }

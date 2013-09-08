@@ -34,11 +34,12 @@
 
     UserIndexCtrl.prototype.elements = {
       '#user_list_script': 'user_list_script',
-      '#userlist_pager_script': 'userlist_pager_script'
+      '#userlist_pager_script': 'userlist_pager_script',
+      '#userListDiv': 'userListDiv'
     };
 
     UserIndexCtrl.prototype.events = {
-      'click #add_user_link': 'showPopWindow',
+      'click #add_user_link, #edit_user_link': 'showPopWindow',
       'click div#pagination a': 'getNextOrPreUsers'
     };
 
@@ -48,6 +49,16 @@
       template = Handlebars.compile(this.user_list_script.html());
       html = template({
         collection: records
+      });
+      Handlebars.registerHelper("getStatusName", function(userStatus) {
+        var statusName;
+        statusName = "";
+        if (userStatus === 1) {
+          statusName = "活跃";
+        } else {
+          statusName = "冻结";
+        }
+        return statusName;
       });
       $('#user_tbody').html(html);
       template = Handlebars.compile(this.userlist_pager_script.html());
@@ -63,8 +74,9 @@
       var page;
       this.log($(e.target));
       this.log($(e.target).parents('li').data('page'));
-      $.isLoading({
-        text: "Loading"
+      this.userListDiv.isLoading({
+        text: 'Loading...',
+        position: 'overlay'
       });
       page = $(e.target).parents('li').data('page');
       return $.ajax({
@@ -81,8 +93,8 @@
             clear: true
           });
           return setTimeout((function() {
-            return $.isLoading("hide");
-          }), 2000);
+            return $('#userListDiv').isLoading("hide");
+          }), 1000);
         }
       });
     };
@@ -101,6 +113,8 @@
     function UserPopWindowCtrl() {
       UserPopWindowCtrl.__super__.constructor.apply(this, arguments);
       this.user = null;
+      this.dataOperation = '';
+      this.userIndex = '';
       this.setFormValidationRules();
     }
 
@@ -115,13 +129,13 @@
     };
 
     UserPopWindowCtrl.prototype.showPopWindow = function(event) {
-      var $node, dataOperation, id;
+      var $node, id;
       this.log("UserPopWindowCtrl showPopWindow");
-      console.log($._data($(event.target)[0], 'events'));
       $node = $(event.target);
-      dataOperation = $node.data('operation');
-      id = $node.data('gid');
-      if (dataOperation === 'add_user') {
+      this.dataOperation = $node.data('operation');
+      this.userIndex = $node.data('index');
+      id = String($node.data('gid'));
+      if (this.dataOperation === 'add_user') {
         $('#pop_title').html('添加用户');
         this.user_form.attr('action', UrlConfig.adminBaseUrl + '/user/create');
         this.user = new UserModle;
@@ -165,7 +179,8 @@
     };
 
     UserPopWindowCtrl.prototype.formSubmit = function(e) {
-      var url;
+      var url,
+        _this = this;
       console.log("formSubmit formSubmitformSubmit");
       console.log($(e.target));
       url = $(e.target).parents('form').attr('action');
@@ -177,10 +192,17 @@
           data: this.user.attributes(),
           success: function(response, textStatus, xhr) {
             console.log('----------');
-            console.log(response);
-            console.log(textStatus);
-            console.log(xhr);
-            return window.location.reload();
+            if (_this.dataOperation === 'add_user') {
+              alert('add success');
+              return window.location.reload();
+            } else {
+              _this.log('update success');
+              window.userList[_this.userIndex] = _this.user;
+              UserModle.refresh(window.userList, {
+                clear: true
+              });
+              return _this.el.modal('hide');
+            }
           },
           error: function() {
             return $('#messageDiv').show();
