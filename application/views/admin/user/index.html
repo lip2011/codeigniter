@@ -92,7 +92,7 @@
                 <div class="control-group">
                     <label class="control-label" for="PasswordConfirm">确认密码</label>
                     <div class="controls">
-                        <input type="text" id="PasswordConfirm" class="text-input" name="password_confirm" placeholder="Password Confirm" data-bind-value="recode.password_confirm">
+                        <input type="text" id="PasswordConfirm" class="text-input" name="password_confirm" placeholder="Password Confirm" data-bind-value="recode.passwd">
                     </div>
                 </div>
 
@@ -150,7 +150,13 @@
                 <td>{{this.login_name}}</td>
                 <td>{{this.phone}}</td>
                 <td>{{this.email}}</td>
-                <td>{{this.status}}</td>
+                <td>
+                    {{#if_eq this.status compare=2}}
+                        <span class="user-status">{{getStatusName this.status}}</span>
+                    {{else}}
+                        {{getStatusName this.status}}
+                    {{/if_eq}}
+                </td>
                 <td>
                     <i class="icon-pencil"></i>
                     <a id="edit_user_link" class="user-show-dialog" data-gid="{{this.id}}" data-index="{{@index}}" data-operation="edit_user">

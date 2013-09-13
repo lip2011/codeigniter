@@ -1,5 +1,13 @@
 window.App ||= {}
 
+Handlebars.registerHelper "getStatusName", (userStatus) ->
+    statusName = ""
+    if userStatus is '1'
+        statusName = "活跃"
+    else
+        statusName = "冻结"
+    statusName
+
 $(document).ready ->
     App.user_popWindow_ctrl = new App.UserPopWindowCtrl
         el: $('#user_pop_model')
@@ -7,6 +15,7 @@ $(document).ready ->
     App.user_index_ctrl = new App.UserIndexCtrl
         el: $('div#usersDiv')
         popModalCtrl: App.user_popWindow_ctrl
+
 
 class App.UserIndexCtrl extends Spine.Controller
 
@@ -17,6 +26,7 @@ class App.UserIndexCtrl extends Spine.Controller
         super
         UserModle.bind('refresh create', @userRefresh)
         UserModle.refresh(window.userList, {clear: true})
+
 
     elements:
         '#user_list_script': 'user_list_script'
@@ -32,13 +42,7 @@ class App.UserIndexCtrl extends Spine.Controller
         template = Handlebars.compile(@user_list_script.html())
         html = template({collection: records})
 
-        Handlebars.registerHelper "getStatusName", (userStatus) ->
-            statusName = ""
-            if userStatus is 1
-                statusName = "活跃"
-            else
-                statusName = "冻结"
-            statusName
+
         $('#user_tbody').html(html)
 
         template = Handlebars.compile(@userlist_pager_script.html())
@@ -107,7 +111,6 @@ class App.UserPopWindowCtrl extends Spine.Controller
         else 
             $('#pop_title').html('修改用户信息')
             @user_form.attr('action', UrlConfig.adminBaseUrl + '/user/update')
-
             @user = UserModle.findByAttribute('id', id)
 
         rivets.bind(@user_form, {recode: @user})
@@ -151,11 +154,8 @@ class App.UserPopWindowCtrl extends Spine.Controller
                     # console.log textStatus
                     # console.log xhr
                     if (@dataOperation == 'add_user')
-                        alert 'add success'
                         window.location.reload()
                     else
-                        @log 'update success'
-
                         window.userList[@userIndex] = @user
                         UserModle.refresh(window.userList, {clear: true})
                         @el.modal('hide')

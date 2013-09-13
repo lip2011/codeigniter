@@ -64,7 +64,7 @@ $autoload['libraries'] = array('smarty', 'database');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'log', 'form', 'array');
+$autoload['helper'] = array('url', 'form', 'array');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array('admin_view', 'notice');
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('common_model');
 
 
 /* End of file autoload.php */

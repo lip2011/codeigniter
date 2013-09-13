@@ -46,3 +46,7 @@
 .error-line {
     margin-left: 95px;
 }
+
+.user-status {
+    color: red;
+}

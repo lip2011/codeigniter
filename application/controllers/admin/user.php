@@ -2,8 +2,6 @@
 
 class User extends MY_Controller
 {   
-    private $_pageSize = 4;
-
     public function index()
     {
         $page = $this->getParam('page', 1);

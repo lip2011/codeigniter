@@ -5,6 +5,17 @@
 
   window.App || (window.App = {});
 
+  Handlebars.registerHelper("getStatusName", function(userStatus) {
+    var statusName;
+    statusName = "";
+    if (userStatus === '1') {
+      statusName = "活跃";
+    } else {
+      statusName = "冻结";
+    }
+    return statusName;
+  });
+
   $(document).ready(function() {
     App.user_popWindow_ctrl = new App.UserPopWindowCtrl({
       el: $('#user_pop_model')
@@ -49,16 +60,6 @@
       template = Handlebars.compile(this.user_list_script.html());
       html = template({
         collection: records
-      });
-      Handlebars.registerHelper("getStatusName", function(userStatus) {
-        var statusName;
-        statusName = "";
-        if (userStatus === 1) {
-          statusName = "活跃";
-        } else {
-          statusName = "冻结";
-        }
-        return statusName;
       });
       $('#user_tbody').html(html);
       template = Handlebars.compile(this.userlist_pager_script.html());
@@ -193,10 +194,8 @@
           success: function(response, textStatus, xhr) {
             console.log('----------');
             if (_this.dataOperation === 'add_user') {
-              alert('add success');
               return window.location.reload();
             } else {
-              _this.log('update success');
               window.userList[_this.userIndex] = _this.user;
               UserModle.refresh(window.userList, {
                 clear: true
